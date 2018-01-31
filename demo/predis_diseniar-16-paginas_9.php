@@ -1,0 +1,1463 @@
+<?php 
+    session_set_cookie_params(21600,"/");
+    session_start();
+    include("includes/conexion.php");
+    if (!isset($_SESSION['ESTADO'])) {
+        header("Location:index.php");
+    }
+
+    $usuario=$_SESSION['ESTADO'];
+    header("Content-Type:text/html; charset=utf-8");
+
+    $result_dir=mysql_query("select * from usuarios WHERE email='$usuario'");
+    $row_dir=mysql_fetch_array($result_dir);
+    $id_usuario = $row_dir['Id'];
+    $result_sucs1=mysql_query("select * from sucursales WHERE id_usuario='$id_usuario'");
+    $num_rows = mysql_num_rows($result_sucs1);
+    mysql_data_seek($result_sucs1, 0); 
+
+    $niveluser=$row_dir['categoria'];
+
+    if ($niveluser == 'operador') {
+        $urlRenueva = "renuevarating-16.php";
+        $urlCreate = "userpredis_createhtml-16.php";
+        $urlGuarda = "guardarating-16.php";
+    }
+    else {
+        $urlRenueva = "predis_renuevarating-16.php";
+        $urlCreate = "predis_createhtml-16.php";
+        $urlGuarda = "predis_guardarating-16.php";
+    }
+?>
+<?php 
+//FECHA para cabecera
+            $datecab = date('Y-F', strtotime('+1 month')); 
+            $datecab = explode("-", $datecab);
+            $mescab = $datecab[1];
+            $mesbanner = '';
+            switch ($mescab) {
+                case "January":
+                    $mesbanner='01';
+                    break;
+                case "February":
+                    $mesbanner='02';
+                    break;
+                case "March":
+                    $mesbanner='03';
+                    break;
+                case "April":
+                    $mesbanner='04';
+                    break;
+                case "May":
+                    $mesbanner='05';
+                    break;
+                case "June":
+                    $mesbanner='06';
+                    break;
+                case "July":
+                    $mesbanner='07';
+                    break;
+                case "August":
+                    $mesbanner='08';
+                    break;
+                case "September":
+                    $mesbanner='09';
+                    break;
+                case "October":
+                    $mesbanner='10';
+                    break;
+                case "November":
+                    $mesbanner='11';
+                    break;
+                case "December":
+                    $mesbanner='12';
+                    break;
+            }
+
+?>
+<?php
+    $result_traecantidad=mysql_query("select * from banners_flyer WHERE cara='pag10' AND mes='$mesbanner'");
+    $valor = 0;
+    $valortotal = 0;
+    $maximoprod = 12;
+        if($row_traecantidad=mysql_fetch_array($result_traecantidad)){
+            do {
+                    $posicion = $row_traecantidad['posicion'];
+                    $valor = $row_traecantidad['valor'];
+                    if ($posicion == 1) {
+                        $bloque1 = $valor;
+                        $urlbloque1 = $row_traecantidad['url'];
+                    }
+                    if ($posicion == 2) {
+                        $bloque2 = $valor;
+                        $urlbloque2 = $row_traecantidad['url'];
+                    }
+                    if ($posicion == 3) {
+                        $bloque3 = $valor;
+                        $urlbloque3 = $row_traecantidad['url'];
+                    }
+                    if ($posicion == 4) {
+                        $bloque4 = $valor;
+                        $urlbloque4 = $row_traecantidad['url'];
+                    }
+                    $valortotal = $valor + $row_traecantidad['valor'];
+                        
+            } while ($row_traecantidad=mysql_fetch_array($result_traecantidad));
+            if (isset($bloque1)) {
+                if ($bloque1 == 25) {
+                    $maximoprod = ($maximoprod - 3);
+                }
+                if ($bloque1 == 50) {
+                    $maximoprod = ($maximoprod - 6);
+                }
+                if ($bloque1 == 75) {
+                    $maximoprod = ($maximoprod - 9);
+                }
+                if ($bloque1 == 100) {
+                    $maximoprod = 0;
+                }
+            }
+            if (isset($bloque2)) {
+                if ($bloque2==25) {
+                    $maximoprod = ($maximoprod - 3);
+                }
+                if ($bloque2==50) {
+                    $maximoprod = ($maximoprod - 6);
+                }
+                if ($bloque2==75) {
+                    $maximoprod = ($maximoprod - 9);
+                }
+            }
+            if (isset($bloque3)) {
+                if ($bloque3==25) {
+                    $maximoprod = ($maximoprod - 3);
+                }
+                if ($bloque3==50) {
+                    $maximoprod = ($maximoprod - 6);
+                }
+            }
+            if (isset($bloque4)) {
+                if ($bloque4==25) {
+                    $maximoprod = ($maximoprod - 3);
+                }
+            }
+        }
+?>
+<?php
+// CONSULTA BLOQUEO DE MARCAS
+    $result_bloqueo=mysql_query("select marca, cantidad, nombre, logo from bloqueo INNER JOIN marcas ON marcas.Id=bloqueo.marca WHERE cara='pag10' order by fecha desc");
+?>
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>WEB TO FLYER</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<!-- Custom CSS -->
+<link href="css/style.css" rel='stylesheet' type='text/css' />
+<link href="css/wtf.css" rel='stylesheet' type='text/css' />
+<!-- Graph CSS -->
+<link href="css/font-awesome.css" rel="stylesheet"> 
+<!-- jQuery -->
+<link href='//fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Tulpen+One" rel="stylesheet">
+<!-- lined-icons -->
+<link rel="stylesheet" href="css/icon-font.min.css" type='text/css' />
+<!-- //lined-icons -->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/scripts.js"></script>
+<script src="js/funciones.js"></script>
+<link href='css/sweetalert.css' rel='stylesheet' type='text/css'>
+<script src="js/sweetalert.min.js"></script>
+<script src="js/diseniar.js"></script>
+ <script type="text/javascript"> 
+            var cambiado = 0;  
+            var traecantidad = '';
+            var status = '';
+            var numCaja = 1;
+            var relprod = '';
+            var precioContado = '';
+            var tea = '';
+            var cft = '';
+            var coef = '';
+            var txtlegales = '';
+            var tarjetaVal = '';
+            var bancoVal = '';
+            var cuotasVal = '';
+            var idFinan2 = '';
+            var varprod = "#uno";
+            var idcucarda = '';
+            var numCajaQuitar = '';
+            var long = '';
+            var cara = 'pag10';
+
+     $(window).load(function(){
+		SameHeight('.listado-prod li.col-md-5ths .content');
+        $("#cargando").fadeOut();
+      });
+     
+    // CARGAR LEGALES EN PIE
+    function cargarLegales() {
+        var completarLegal = '';
+        $("#flyercontainer .cajaproducto").each(function() {
+            var numeroVal = $(this).find('.numero').text();
+            var stockVal = $(this).find('.frases .stock').val();
+            completarLegal = completarLegal + numeroVal + ' STOCK: '+stockVal+' U ';
+        });
+        $("#flyercontainer .legalespie").html('Los precios contado son válidos en efectivo, tarjeta de débito ó tarjeta de crédito en 1 pago. Consulte por otros planes de financiación.'+completarLegal);
+    }
+     
+        $(document).ready(function () {
+            $("#cargando").fadeIn();
+            //CALCULAR Cantidad de Productos 
+            traecantidad = '<?php echo ($maximoprod);?>';
+            console.log(traecantidad);
+            if (traecantidad == 0) {
+                $('.continuar, .guardar').removeClass('disabled');
+            }
+
+            //CLICK en Producto del listado
+            var formatoproducto = 'producto-enflyer.php';
+            $('#wraprod').on('click', ':checkbox', function() { 
+                var checkValor = $(this).val();
+                long = $( "#flyercontainer .completed" ).length;
+                $(this).parent().parent().parent('li').fadeOut( 'normal', function(){
+                  if (numCaja <= 3) {
+                      $("html, body").animate({
+                             scrollTop: $("#flyercontainer").offset().top
+                      }, 800);
+                  }
+                  if ((numCaja > 3) && (numCaja <= 6)) {
+                      $("html, body").animate({
+                             scrollTop: $("#flyercontainer #cuatro").offset().top
+                      }, 800);
+                  }
+                  if ((numCaja > 6) && (numCaja <= 9)) {
+                      $("html, body").animate({
+                             scrollTop: $("#flyercontainer #siete").offset().top
+                      }, 800);
+                  }
+                  if ((numCaja > 9) && (numCaja <= 12)) {
+                      $("html, body").animate({
+                             scrollTop: $("#flyercontainer #end").offset().top
+                      }, 800);
+                  }
+                });
+
+                if (long <= traecantidad) {
+                    $('#cargando').fadeIn();
+                    $.ajax({
+                        type: "POST",
+                        url: formatoproducto,
+                        dataType: "html",
+                        data: {
+                            'id': checkValor
+                        },
+                        success: function(data) { 
+                            $('#cargando').fadeOut();
+                            precioContado = '';
+                            relprod = '';
+                            if(numCaja == 1) {
+                                $('#uno').addClass('completed');
+                                $("#uno").html(data); 
+                                $("#flyercontainer #uno .bottom input").attr('rel', '1');
+                                $("#flyercontainer #uno .zona-cuota input").attr('rel', '1');
+                                $("#flyercontainer #uno .seletarjetas").attr('rel', '1');
+                                $("#flyercontainer #uno .selebancos").attr('rel', '1');
+                                $("#flyercontainer #uno .selecuotas").attr('rel', '1');
+                                $("#flyercontainer #uno .cft").attr('rel', '1');
+                                $("#flyercontainer #uno .ptf").attr('rel', '1');
+                                $("#flyercontainer #uno .tea").attr('rel', '1');
+                            }
+                            if(numCaja == 2) {
+                                $('#dos').addClass('completed');
+                                $("#dos").html(data); 
+                                $("#flyercontainer #dos .bottom input").attr('rel', '2');
+                                $("#flyercontainer #dos .zona-cuota input").attr('rel', '2');
+                                $("#flyercontainer #dos .seletarjetas").attr('rel', '2');
+                                $("#flyercontainer #dos .selebancos").attr('rel', '2');
+                                $("#flyercontainer #dos .selecuotas").attr('rel', '2');
+                                $("#flyercontainer #dos .cft").attr('rel', '2');
+                                $("#flyercontainer #dos .ptf").attr('rel', '2');
+                                $("#flyercontainer #dos .tea").attr('rel', '2');
+                            }
+                            if(numCaja == 3) {
+                                $('#tres').addClass('completed');
+                                $("#tres").html(data); 
+                                $("#flyercontainer #tres .bottom input").attr('rel', '3');
+                                $("#flyercontainer #tres .zona-cuota input").attr('rel', '3');
+                                $("#flyercontainer #tres .seletarjetas").attr('rel', '3');
+                                $("#flyercontainer #tres .selebancos").attr('rel', '3');
+                                $("#flyercontainer #tres .selecuotas").attr('rel', '3');
+                                $("#flyercontainer #tres .cft").attr('rel', '3');
+                                $("#flyercontainer #tres .ptf").attr('rel', '3');
+                                $("#flyercontainer #tres .tea").attr('rel', '3');
+                            }
+                            if(numCaja == 4) {
+                                $('#cuatro').addClass('completed');
+                                $("#cuatro").html(data); 
+                                $("#flyercontainer #cuatro .bottom input").attr('rel', '4');
+                                $("#flyercontainer #cuatro .zona-cuota input").attr('rel', '4');
+                                $("#flyercontainer #cuatro .seletarjetas").attr('rel', '4');
+                                $("#flyercontainer #cuatro .selebancos").attr('rel', '4');
+                                $("#flyercontainer #cuatro .selecuotas").attr('rel', '4');
+                                $("#flyercontainer #cuatro .cft").attr('rel', '4');
+                                $("#flyercontainer #cuatro .ptf").attr('rel', '4');
+                                $("#flyercontainer #cuatro .tea").attr('rel', '4');
+                            }
+                            if(numCaja == 5) {
+                                $('#cinco').addClass('completed');
+                                $("#cinco").html(data); 
+                                $("#flyercontainer #cinco .bottom input").attr('rel', '5');
+                                $("#flyercontainer #cinco .zona-cuota input").attr('rel', '5');
+                                $("#flyercontainer #cinco .seletarjetas").attr('rel', '5');
+                                $("#flyercontainer #cinco .selebancos").attr('rel', '5');
+                                $("#flyercontainer #cinco .selecuotas").attr('rel', '5');
+                                $("#flyercontainer #cinco .cft").attr('rel', '5');
+                                $("#flyercontainer #cinco .ptf").attr('rel', '5');
+                                $("#flyercontainer #cinco .tea").attr('rel', '5');
+                            }
+                            if(numCaja == 6) {
+                                $('#seis').addClass('completed');
+                                $("#seis").html(data); 
+                                $("#flyercontainer #seis .bottom input").attr('rel', '6');
+                                $("#flyercontainer #seis .zona-cuota input").attr('rel', '6');
+                                $("#flyercontainer #seis .seletarjetas").attr('rel', '6');
+                                $("#flyercontainer #seis .selebancos").attr('rel', '6');
+                                $("#flyercontainer #seis .selecuotas").attr('rel', '6');
+                                $("#flyercontainer #seis .cft").attr('rel', '6');
+                                $("#flyercontainer #seis .ptf").attr('rel', '6');
+                                $("#flyercontainer #seis .tea").attr('rel', '6');
+                            }
+                            if(numCaja == 7) {
+                                $('#siete').addClass('completed');
+                                $("#siete").html(data); 
+                                $("#flyercontainer #siete .bottom input").attr('rel', '7');
+                                $("#flyercontainer #siete .zona-cuota input").attr('rel', '7');
+                                $("#flyercontainer #siete .seletarjetas").attr('rel', '7');
+                                $("#flyercontainer #siete .selebancos").attr('rel', '7');
+                                $("#flyercontainer #siete .selecuotas").attr('rel', '7');
+                                $("#flyercontainer #siete .cft").attr('rel', '7');
+                                $("#flyercontainer #siete .ptf").attr('rel', '7');
+                                $("#flyercontainer #siete .tea").attr('rel', '7');
+                            }
+                            if(numCaja == 8) {
+                                $('#ocho').addClass('completed');
+                                $("#ocho").html(data); 
+                                $("#flyercontainer #ocho .bottom input").attr('rel', '8');
+                                $("#flyercontainer #ocho .zona-cuota input").attr('rel', '8');
+                                $("#flyercontainer #ocho .seletarjetas").attr('rel', '8');
+                                $("#flyercontainer #ocho .selebancos").attr('rel', '8');
+                                $("#flyercontainer #ocho .selecuotas").attr('rel', '8');
+                                $("#flyercontainer #ocho .cft").attr('rel', '8');
+                                $("#flyercontainer #ocho .ptf").attr('rel', '8');
+                                $("#flyercontainer #ocho .tea").attr('rel', '8');
+                            }
+                            if(numCaja == 9) {
+                                $('#nueve').addClass('completed');
+                                $("#nueve").html(data); 
+                                $("#flyercontainer #nueve .bottom input").attr('rel', '9');
+                                $("#flyercontainer #nueve .zona-cuota input").attr('rel', '9');
+                                $("#flyercontainer #nueve .seletarjetas").attr('rel', '9');
+                                $("#flyercontainer #nueve .selebancos").attr('rel', '9');
+                                $("#flyercontainer #nueve .selecuotas").attr('rel', '9');
+                                $("#flyercontainer #nueve .cft").attr('rel', '9');
+                                $("#flyercontainer #nueve .ptf").attr('rel', '9');
+                                $("#flyercontainer #nueve .tea").attr('rel', '9');
+                            }
+                            if(numCaja == 10) {
+                                $('#diez').addClass('completed');
+                                $("#diez").html(data); 
+                                $("#flyercontainer #diez .bottom input").attr('rel', '10');
+                                $("#flyercontainer #diez .zona-cuota input").attr('rel', '10');
+                                $("#flyercontainer #diez .seletarjetas").attr('rel', '10');
+                                $("#flyercontainer #diez .selebancos").attr('rel', '10');
+                                $("#flyercontainer #diez .selecuotas").attr('rel', '10');
+                                $("#flyercontainer #diez .cft").attr('rel', '10');
+                                $("#flyercontainer #diez .ptf").attr('rel', '10');
+                                $("#flyercontainer #diez .tea").attr('rel', '10');
+                            }
+                            if(numCaja == 11) {
+                                $('#once').addClass('completed');
+                                $("#once").html(data); 
+                                $("#flyercontainer #once .bottom input").attr('rel', '11');
+                                $("#flyercontainer #once .zona-cuota input").attr('rel', '11');
+                                $("#flyercontainer #once .seletarjetas").attr('rel', '11');
+                                $("#flyercontainer #once .selebancos").attr('rel', '11');
+                                $("#flyercontainer #once .selecuotas").attr('rel', '11');
+                                $("#flyercontainer #once .cft").attr('rel', '11');
+                                $("#flyercontainer #once .ptf").attr('rel', '11');
+                                $("#flyercontainer #once .tea").attr('rel', '11');
+                            }
+                            if(numCaja == 12) {
+                                $('#doce').addClass('completed');
+                                $("#doce").html(data); 
+                                $("#flyercontainer #doce .bottom input").attr('rel', '12');
+                                $("#flyercontainer #doce .zona-cuota input").attr('rel', '12');
+                                $("#flyercontainer #doce .seletarjetas").attr('rel', '12');
+                                $("#flyercontainer #doce .selebancos").attr('rel', '12');
+                                $("#flyercontainer #doce .selecuotas").attr('rel', '12');
+                                $("#flyercontainer #doce .cft").attr('rel', '12');
+                                $("#flyercontainer #doce .ptf").attr('rel', '12');
+                                $("#flyercontainer #doce .tea").attr('rel', '12');
+                            }
+                            long = $( "#flyercontainer .completed" ).length;
+                        }
+                    });
+                } 
+                if (long == (traecantidad-1)) {
+                    $('.continuar').removeClass('disabled');
+                }
+            }); 
+            
+            $('#wraprod').on('click', '#btnbuscar', function(e) { 
+                e.preventDefault();
+                var buscar = $('#buscar').val();
+                $.ajax({
+                       type: "POST",
+                       dataType: "html",
+                       url: "buscarprod.php",
+                       data: {
+                            'buscar': buscar
+                        },
+                       success: function(data)
+                       {
+                           $("#wraprod #seleccion-prod ul").html(data); 
+                           $('#wraprod').find('input[type=checkbox]').each(function () {
+                                $(this).prop('checked', false);
+                                var checkelem = $(this);
+                                var valorCh = $(this).val();
+                                $('#flyercontainer').find('.quitar').each(function(){
+                                    var quitar = $(this).attr('id');
+                                    if (valorCh == quitar) {
+                                        $(checkelem).parent().parent().parent().fadeOut();
+                                    }
+                                });
+                           });
+                           e.preventDefault();
+                            return false;
+                       },
+                       complete: function(data)
+                       {
+                           var cantItems = $("#wraprod #seleccion-prod ul li:visible").length; 
+                           var cantPaginas = (cantItems/10);
+                           var cadenaPaginacion = '';
+                           <?php
+                                if (!isset($_GET['id_cat'])) {
+                                    $_SESSION['id_cat']='';
+                                }
+                           ?>
+                           var id_cat = '<?php echo($_SESSION['id_cat']);?>';
+                           for(i = 1; i <= cantPaginas; i++) { 
+                                cadenaPaginacion = cadenaPaginacion+'<a href="'+i+'">'+i+'</a>';
+                           }
+                           $("#wraprod .paginacion").html(cadenaPaginacion);
+                           $("#wraprod .paginacion a").addClass('postbusqueda');
+                           $("#wraprod #seleccion-prod").css('overflow','hidden');
+                           $("#wraprod #seleccion-prod ul").css('position','relative');
+                           var cuantasPag = $('#wraprod .paginacion a').length;
+                            var anchoPag = (cuantasPag * 40) + 120;
+                            if (cuantasPag > 10) {
+                                $('#wraprod .paginacion').css('width', anchoPag);
+                                var estadoLeft = $('#wraprod .paginacion a').position().left;
+                                if (estadoLeft <= 45) {
+                                    $(".slider-paginacion .prev").css('display', 'none');
+                                }
+                                if (anchoPag <= 800) {
+                                    $(".slider-paginacion .prev, .slider-paginacion .next").css('display', 'none!important');
+                                }
+                            }
+                            else {
+                                $('#wraprod .paginacion').css('width', '800px');
+                                $(".slider-paginacion .prev, .slider-paginacion .next").css('display', 'none');
+                            }
+                       }
+                    });
+                return false;
+            });
+            $('#wraprod').on('submit', '#buscar-prod', function(e) { 
+                $(':submit').attr('disabled', 'disabled');
+                e.stopPropagation();
+                return false;
+            });
+            
+            $('#wraprod').on('click', '.paginacion a.postbusqueda', function(e) { 
+                $('#wraprod .paginacion a.postbusqueda').removeClass('active');
+                $(this).addClass('active');
+                var enlace = $(this).attr('href');
+                var ubicacion = (((enlace * 10) + 1)-10);
+                if (enlace == 1) {
+                    ubicacion = 1;
+                }
+                ubicacion = "#wraprod #seleccion-prod ul #0000-"+ubicacion;
+                var elegido = $(ubicacion).position().top;
+                $("#wraprod #seleccion-prod ul").css({top: -elegido});
+                e.stopPropagation();
+                return false;
+            });
+
+            <?php
+            if (!isset($_SESSION{"predis_pag10_".$_SESSION['ESTADO']})) {
+                if ($niveluser!='operador') {
+                    $result_esta=mysql_query("select * from rating_productos WHERE cara='pag10' and tipo='16' AND actual='si' and predisenio='si'");
+                    if($row_esta=mysql_fetch_array($result_esta)){
+                        $delete_esta=mysql_query("DELETE FROM rating_productos WHERE cara='pag10' and tipo='16' AND actual='si' and predisenio='si'");
+                    }
+                }
+                if ($niveluser=='operador') {
+                    $result_esta=mysql_query("select * from rating_productos WHERE cara='pag10' and tipo='16' AND actual='si' and usuario='$usuario'");
+                    if($row_esta=mysql_fetch_array($result_esta)){
+                        $delete_esta=mysql_query("DELETE FROM rating_productos WHERE cara='pag10' and tipo='16' AND actual='si'");
+                    }
+                }
+            }
+            if (isset($_SESSION{"predis_contratapa_".$_SESSION['ESTADO']})) { ?>
+                $('.editar_partes #ed_contratapa').removeClass('disabled');
+            <?php } 
+            if (isset($_SESSION{"predis_tapa_".$_SESSION['ESTADO']})) { ?>
+                $('.editar_partes #ed_tapa').removeClass('disabled');
+            <?php }
+            if (isset($_SESSION{"predis_pag2_".$_SESSION['ESTADO']})) { ?>
+                $('.editar_partes #ed_2').removeClass('disabled');
+            <?php }
+             if (isset($_SESSION{"predis_pag3_".$_SESSION['ESTADO']})) { ?>
+                $('.editar_partes #ed_3').removeClass('disabled');
+            <?php } 
+            if (isset($_SESSION{"predis_pag4_".$_SESSION['ESTADO']})) { ?>
+                $('.editar_partes #ed_4').removeClass('disabled');
+            <?php } 
+            if (isset($_SESSION{"predis_pag5_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?> 
+                    $('.editar_partes #ed_5').removeClass('disabled');
+            <?php 
+                //}   
+            }
+            if (isset($_SESSION{"predis_pag6_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?>
+                $('.editar_partes #ed_6').removeClass('disabled');
+            <?php 
+                //}
+            } 
+            if (isset($_SESSION{"predis_pag7_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?>
+                $('.editar_partes #ed_7').removeClass('disabled');
+            <?php 
+               // }
+            }  
+            if (isset($_SESSION{"predis_pag8_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?> 
+                    $('.editar_partes #ed_8').removeClass('disabled');
+            <?php 
+                //}   
+            } 
+            if (isset($_SESSION{"predis_pag9_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?> 
+                    $('.editar_partes #ed_9').removeClass('disabled');
+            <?php 
+               // }   
+            } 
+            if (isset($_SESSION{"predis_pag11_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?> 
+                    $('.editar_partes #ed_11').removeClass('disabled');
+            <?php 
+                //}   
+            } 
+            if (isset($_SESSION{"predis_pag12_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?> 
+                    $('.editar_partes #ed_12').removeClass('disabled');
+            <?php 
+                //}   
+            } 
+            if (isset($_SESSION{"predis_pag13_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?> 
+                    $('.editar_partes #ed_13').removeClass('disabled');
+            <?php 
+                //}   
+            } 
+            if (isset($_SESSION{"predis_pag14_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?> 
+                    $('.editar_partes #ed_14').removeClass('disabled');
+            <?php 
+                //}   
+            }
+            if (isset($_SESSION{"predis_pag15_".$_SESSION['ESTADO']})) { 
+                //if ($niveluser!='operador') {
+            ?> 
+                    $('.editar_partes #ed_15').removeClass('disabled');
+            <?php 
+               //}   
+            }
+            
+            if (isset($_SESSION{"predis_pag10_".$_SESSION['ESTADO']})) { ?>
+            
+                var content = '<?php $_SESSION{"predis_pag10_".$_SESSION['ESTADO']}; ?>';
+                $('.editar_partes #ed_pag10').removeClass('disabled');
+                $.ajax({
+                       type: "POST",
+                       dataType: "html",
+                       url: "predis_recuperarpag10.php",
+                       data: {
+                            'content': content
+                        },
+                       success: function(data)
+                       {
+                           $("#flyercontainer").html(data);  
+                           long = $( "#flyercontainer .completed" ).length;
+                            if (long > 0) {
+                                $('.guardar').removeClass('disabled');
+                            }
+                            if (long >= traecantidad) {
+                                $('.continuar').removeClass('disabled');
+                            }
+                            if (long < traecantidad) {
+                                $('.continuar').addClass('disabled');
+                            }  
+                            $('#flyercontainer').find('a.seletarjetas').each(function () {
+                                        var imgurl = $(this).children('img').attr('src');
+                                        if (imgurl=='images/tarjetas/credito-personal.jpg') {
+                                            $(this).parent().find('.selebancos').text('');
+                                        }
+                            });                     
+                            return false;
+                       }
+                });
+                
+                $("#wraprod").load( "productos-inner.php", function() {
+                    $('#btndown').fadeIn();
+                    $("html, body").animate({
+                             scrollTop: $(".wrap-diseniar").offset().top
+                    }, 800);
+                    
+                    $('#wraprod').find('input[type=checkbox]').each(function () {
+                        $(this).prop('checked', false);
+                        var checkelem = $(this);
+                        var valorCh = $(this).val();
+                        $('#flyercontainer').find('.quitar').each(function(){
+                            var quitar = $(this).attr('id');
+                            if (valorCh == quitar) {
+                                $(checkelem).parent().parent().parent().fadeOut(); 
+                            }
+                        });
+                     }); 
+                });
+                $('#wraprod').css('height','1090px');                         
+                
+            <?php
+            }
+            ?>
+            
+            <?php
+            if (isset($_GET['pagina'])) { 
+            ?>
+            $('#wraprod').find('input[type=checkbox]').each(function () {
+                        $(this).prop('checked', false);
+                        var checkelem = $(this);
+                        var valorCh = $(this).val();
+                        $('#flyercontainer').find('.quitar').each(function(){
+                            var quitar = $(this).attr('id');
+                            if (valorCh == quitar) {
+                                $(checkelem).parent().parent().parent().fadeOut(); 
+                            }
+                        });
+            });
+            <?php
+            }
+            ?>
+            
+            
+            
+            //GUARDAR AVANCE 
+            $(".guardar").click(function(e) { 
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.ajax({
+                            type: "POST",
+                            dataType : "html",
+                            url: "<?php echo($urlRenueva);?>",
+                            data: {
+                                cara: "pag10"
+                            }
+                    });
+                    $('#cargando').fadeIn();
+                    var sesion = {};
+                    var flyer = {};
+                    var cara = "pag10";
+                    sesion = $('#flyercontainer').html();
+                    flyer = $('#flyercontainer').html();
+                    flyer = flyer.replace(/images/g, "../../images");
+                    flyer = flyer.replace(/"flyer/g, '"../../flyer'); 
+                    <?php 
+                    if (isset($_SESSION{"predis_archivo_pag10_".$_SESSION['ESTADO']})) { ?>
+                        var name = '<?php echo($_SESSION{"predis_archivo_pag10_".$_SESSION['ESTADO']}); ?>';
+                    <?php 
+                    }
+                    else {
+                    ?>
+                    var name = '<?php echo("flyer/html/FLYER_pag10_".date('m-d-Y_hia').".html"); ?>';
+                    <?php 
+                    }
+                    ?>
+                    var fecha = '<?php echo(date("Y-m-d H:i:s")); ?>';
+                    $.ajax({
+                            type: "POST",
+                            dataType : "html",
+                            url: "<?php echo($urlCreate);?>",
+                            data: {
+                                sesion: sesion,
+                                cara: cara,
+                                flyer: flyer,
+                                name: name,
+                                fecha: fecha
+                            },
+                            success: function(data){
+                                cambiado = 0;
+                                $('#cargando').fadeOut();
+                            }
+                    });
+                    var id_quitar = []; 
+                    var txt_legales = [];
+                    var cara = "pag10";
+                    var limite = traecantidad;
+                    var id_sesion = <?php echo($_SESSION['SESIONFLY']); ?>;
+                    $( "#flyercontainer .quitar" ).each(function() {
+                        id_quitar.push($(this).attr('id'));
+                        txt_legales.push($(this).closest('.cajaproducto').attr('txt-legales'));
+                    });
+                    $.ajax({
+                                        type: "POST",
+                                        url: "<?php echo($urlGuarda);?>",
+                                        dataType : "html",
+                                        data: {
+                                            id_quitar: id_quitar,
+                                            cara: cara,
+                                            id_sesion: id_sesion,
+                                            limite: limite,
+                                            txt_legales: txt_legales
+                                        },
+                                        complete: function(data){
+                                            console.log(data);
+                                        },
+                                        error: function( xhr, status ) {
+                                            return false;
+                                        }
+                    });
+            });
+            
+            //CONTINUAR PROXIMO PASO 
+            $(".continuar").click(function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.ajax({
+                            type: "POST",
+                            dataType : "html",
+                            url: "<?php echo($urlRenueva);?>",
+                            data: {
+                                cara: "pag10"
+                            }
+                    });
+                    var i = 1;
+                    $('#flyercontainer .cajaproducto').each(function () {
+                        $(this).find(".numero").text(i+') ');
+                        i++;
+                    });
+                    cargarLegales();
+                    var controlStock = 0;
+                    var controlPContado = 0;
+                    var controlPCuota = 0;
+                    var hayerror = 0;
+                    var controlBloqueo = 0;
+                    var array_bloqueo = []; 
+                    $("#flyercontainer .cajaproducto .frases .stock").each(function() {
+                        if ($(this).val() == '') {
+                            controlStock = 1;
+                        } 
+                    });
+                    $("#flyercontainer .bloqueado").each(function() {
+                        var marcaBloq = $(this).attr('data-marca');
+                        var marcaActual = $(this).find('.marca').attr('data-marca');
+                        if (marcaBloq != marcaActual) {
+                            array_bloqueo.push($(this).attr('id'));
+                            controlBloqueo = $(this).attr('id');
+                        }
+                    });
+                    if (controlStock == 1) {
+                        hayerror = 1;
+                        swal("Error", "Completa el STOCK de todos los productos.", "error");
+                        return false;
+                    }
+                    $("#flyercontainer .cajaproducto .bottom input.big").each(function() {
+                        if ($(this).val() == '$0,00') {
+                            controlPContado = 1;
+                        } 
+                    });
+                    if (controlPContado == 1) {
+                        hayerror = 1;
+                        swal("Error", "Completa el PRECIO CONTADO de todos los productos.", "error");
+                        return false;
+                    }
+                    $("#flyercontainer .cajaproducto .zona-cuota:visible input").each(function() {
+                        if ($(this).val() == '$0,00') {
+                            controlPCuota = 1;
+                        } 
+                    });
+                    if (controlPCuota == 1) {
+                        hayerror = 1;
+                        swal("Error", "Completa la FORMA DE FINANCIACIÓN de todos los productos con financiación.", "error");
+                        return false;
+                    }
+                    $("#flyercontainer .cajaproducto .tachado input").each(function() {
+                        if ($(this).val() == '$0,00') {
+                            $(this).parent().parent().removeClass('tachado');
+                            $(this).parent().parent().children('.quitartachado').css('display','none');
+                            $(this).parent().parent().children('.agregartachado').css('display','block');
+                        } 
+                    });
+                    if (controlBloqueo != 0) {
+                        hayerror = 1;
+                        var i = 0;
+                        for (i; i < array_bloqueo.length; i++) {  
+                            if (array_bloqueo[i] == 'uno') {
+                                numCajaQuitar = 1;
+                            }
+                            if (array_bloqueo[i] == 'dos') {
+                                numCajaQuitar = 2;
+                            }
+                            if (array_bloqueo[i] == 'tres') {
+                                numCajaQuitar = 3;
+                            }
+                            if (array_bloqueo[i] == 'cuatro') {
+                                numCajaQuitar = 4;
+                            }
+                            if (array_bloqueo[i] == 'cinco') {
+                                numCajaQuitar = 5;
+                            }
+                            if (array_bloqueo[i] == 'seis') {
+                                numCajaQuitar = 6;
+                            }
+                            if (array_bloqueo[i] == 'siete') {
+                                numCajaQuitar = 7;
+                            }
+                            if (array_bloqueo[i] == 'ocho') {
+                                numCajaQuitar = 8;
+                            }
+                            if (array_bloqueo[i] == 'nueve') {
+                                numCajaQuitar = 9;
+                            }
+                            if (array_bloqueo[i] == 'diez') {
+                                numCajaQuitar = 10;
+                            }
+                            if (array_bloqueo[i] == 'once') {
+                                numCajaQuitar = 11;
+                            }
+                            if (array_bloqueo[i] == 'doce') {
+                                numCajaQuitar = 12;
+                            }
+                            var nombre_marca = $("#"+array_bloqueo[i]).attr('data-nombre-marca');
+                            var img_marca = $("#"+array_bloqueo[i]).attr('data-img-marca');
+                            $("#"+array_bloqueo[i]).html('<a rel="'+numCajaQuitar+'" class="insertar" href="#" title="Insertar producto de la marca indicada"><div class="txt-inicial">Haz click aquí para<br>agregar un producto de la marca<strong>'+nombre_marca+'</strong><strong><img src="images/'+img_marca+'" height="40" alt=""></strong></div></a>');
+                        }; 
+                        swal("Error", "Debe agregar productos de las marcas correspondientes donde se indica.", "error");
+                        $("html, body").animate({
+                             scrollTop: $("#"+controlBloqueo).offset().top
+                        }, 800);
+                        return false;
+                    }
+                    if (hayerror == 0) {
+                        $('#cargando').fadeIn();
+                        var id_quitar = []; 
+                        var txt_legales = [];
+                        var cara = "pag10";
+                        var limite = traecantidad;
+                        var id_sesion = <?php echo($_SESSION['SESIONFLY']); ?>;
+                        $( "#flyercontainer .quitar" ).each(function() {
+                            id_quitar.push($(this).attr('id'));
+                            txt_legales.push($(this).closest('.cajaproducto').attr('txt-legales'));
+                        });
+                        $.ajax({
+                                            type: "POST",
+                                            url: "<?php echo($urlGuarda);?>",
+                                            dataType : "html",
+                                            data: {
+                                                id_quitar: id_quitar,
+                                                cara: cara,
+                                                id_sesion: id_sesion,
+                                                limite: limite,
+                                                txt_legales: txt_legales
+                                            },
+                                            complete: function(data){
+                                                console.log(data);
+                                            },
+                                            error: function( xhr, status ) {
+                                                return false;
+                                            }
+                        });
+                        var sesion = {};
+                        var flyer = {};
+                        var cara = "pag10";
+                        sesion = $('#flyercontainer').html();
+                        $('#flyercontainer .quitar, #flyercontainer .eliminar-sda, #flyercontainer #agregar-sda img, #flyercontainer .frases, #flyercontainer .selecucarda span, #flyercontainer .tachado .quitartachado, #flyercontainer .agregartachado').remove();
+                        flyer = $('#flyercontainer').html();
+                        flyer = flyer.replace(/images/g, "../../images");
+                        flyer = flyer.replace(/"flyer/g, '"../../flyer'); 
+                        <?php 
+                        if (isset($_SESSION{"predis_archivo_pag10_".$_SESSION['ESTADO']})) { ?>
+                            var name = '<?php echo($_SESSION{"predis_archivo_pag10_".$_SESSION['ESTADO']}); ?>';
+                        <?php 
+                        }
+                        else {
+                        ?>
+                        var name = '<?php echo("flyer/html/FLYER_PAG10_".date('m-d-Y_hia').".html"); ?>';
+                        <?php 
+                        }
+                        ?>
+                        var fecha = '<?php echo(date("Y-m-d H:i:s")); ?>';
+                        $.ajax({
+                                type: "POST",
+                                dataType : "html",
+                                url: "<?php echo($urlCreate);?>",
+                                data: {
+                                    sesion: sesion,
+                                    cara: cara,
+                                    flyer: flyer,
+                                    name: name,
+                                    fecha: fecha
+                                },
+                                success: function(data){
+                                    $('#cargando').fadeOut();
+                                    window.location.href = "predis_diseniar-16-paginas_10.php";
+                                }
+                        });
+                    }
+                    return false;
+            });
+            
+            <?php
+            // POSIBILIDADES BANNERS QUE EMPIECEN DESDE EL BLOQUE 1
+            if (isset($bloque1)) { 
+                if ($bloque1 == 25) {
+                ?>
+                    $('#block1').html('<img src="flyer/<?php echo($urlbloque1);?>" height="252" alt="" style="width:100%;">');
+                <?php
+                }
+                if ($bloque1 == 50) {
+                ?>
+                    $('#block1').css('height','507px');
+                    $('#block1').html('<img src="flyer/<?php echo($urlbloque1);?>" height="507" alt="" style="width:100%;">');
+                    $('#separador-1, #block2').remove();
+                <?php
+                }
+                if ($bloque1 == 75) {
+                    ?>
+                    $('#block1').css('height','762px');
+                    $('#block1').html('<img src="flyer/<?php echo($urlbloque1);?>" height="762" alt="" style="width:100%;">');
+                    $('#separador-1, #block2, #separador-2, #block3').remove();
+                <?php
+                }
+                if ($bloque1 == 100) {
+                    ?>
+                    $('#block1').css('height','1014px');
+                    $('#block1').html('<img src="flyer/<?php echo($urlbloque1);?>" height="1014" alt="" style="width:100%;">');
+                    $('#separador-1, #block2, #separador-2, #block3, #separador-3, #block4').remove();
+                    $('.continuar').removeClass('disabled');
+                <?php
+                }
+            }
+            // POSIBILIDADES BANNERS QUE EMPIECEN DESDE EL BLOQUE 2
+            if (isset($bloque2)) { 
+                if ($bloque2 == 25) {
+                ?>
+                    $('#block2').html('<img src="flyer/<?php echo($urlbloque2);?>" height="252" alt="" style="width:100%;">');
+                <?php
+                }
+                if ($bloque2 == 50) {
+                ?>
+                    $('#block2').css('height','507px');
+                    $('#block2').html('<img src="flyer/<?php echo($urlbloque2);?>" height="507" alt="" style="width:100%;">');
+                    $('#separador-2, #block3').remove();
+                <?php
+                }
+                if ($bloque2 == 75) {
+                    ?>
+                    $('#block2').css('height','762px');
+                    $('#block2').html('<img src="flyer/<?php echo($urlbloque2);?>" height="762" alt="" style="width:100%;">');
+                    $('#separador-2, #block3, #separador-3, #block4').remove();
+                <?php
+                }
+            }
+            // POSIBILIDADES BANNERS QUE EMPIECEN DESDE EL BLOQUE 3
+            if (isset($bloque3)) { 
+                if ($bloque3 == 25) {
+                ?>
+                    $('#block3').html('<img src="flyer/<?php echo($urlbloque3);?>" height="252" alt="" style="width:100%;">');
+                <?php
+                }
+                if ($bloque3 == 50) {
+                ?>
+                    $('#block3').css('height','507px');
+                    $('#block3').html('<img src="flyer/<?php echo($urlbloque3);?>" height="507" alt="" style="width:100%;">');
+                    $('#separador-3, #block4').remove();
+                <?php
+                }
+            }
+            // POSIBILIDADES BANNERS QUE EMPIECEN DESDE EL BLOQUE 4
+            if (isset($bloque4)) { 
+                if ($bloque4 == 25) {
+                ?>
+                    $('#block4').html('<img src="flyer/<?php echo($urlbloque4);?>" height="252" alt="" style="width:100%;">');
+                <?php
+                }
+            }
+            ?>
+            <?php
+            // FIJAR BLOQUEO EN MAQUETA 
+            if($row_bloqueo=mysql_fetch_array($result_bloqueo)) {
+                $i = 1;
+                ?>
+
+                var firstElem = $('.un-cuarto .cajaproducto:first-child').attr('id');
+                <?php
+                do { 
+                    if ($i <=$maximoprod){                  
+                        $id_marca = $row_bloqueo['marca'];
+                        $nombre_marca = $row_bloqueo['nombre'];
+                        $logo = $row_bloqueo['logo'];
+                        $cant_bloqueo = $row_bloqueo['cantidad'];
+                        for ($j = 1; $j <= $cant_bloqueo; $j++) {
+                            if (($j==1) && ($i==1)) {
+                            ?>
+                                $("#"+firstElem).addClass('bloqueado');
+                                $("#"+firstElem).attr('data-marca', '<?php echo($id_marca);?>');
+                                $("#"+firstElem).attr('data-img-marca', '<?php echo($logo);?>');
+                                $("#"+firstElem).attr('data-nombre-marca', '<?php echo($nombre_marca);?>');
+                                $("#"+firstElem).children('.insertar').html("<div class='txt-inicial'>Haz click aquí para<br>agregar un producto de la marca<strong><?php echo($nombre_marca);?></strong><strong><img src='images/<?php echo($logo);?>'height='40px' alt=''></strong></div>");
+                            <?php
+                            }
+                            else {
+                            ?>
+                                var ultimoBloq = $( ".bloqueado" ).last().attr("id"); 
+                                var ultimoInt = $("#"+ultimoBloq).children('.insertar').attr('rel');
+                                var indexBloq = (parseInt(ultimoInt) + 1);
+                                var existeIndex = $('.insertar[rel^='+indexBloq+']').length;
+                                if (indexBloq <= 12) { 
+                                    if (existeIndex == 0) {
+                                        var i=indexBloq;
+                                        for(i=i; existeIndex==0; i++) { 
+                                          existeIndex = $('.insertar[rel^='+i+']').length;
+                                          indexBloq = i;
+                                        }
+                                    }
+                                    $('.insertar[rel^='+indexBloq+']').parent().addClass('bloqueado');
+                                    $('.insertar[rel^='+indexBloq+']').parent().attr('data-marca', '<?php echo($id_marca);?>');
+                                    $('.insertar[rel^='+indexBloq+']').parent().attr('data-img-marca', '<?php echo($logo);?>');
+                                    $('.insertar[rel^='+indexBloq+']').parent().attr('data-nombre-marca', '<?php echo($nombre_marca);?>');
+                                    $('.insertar[rel^='+indexBloq+']').html("<div class='txt-inicial'>Haz click aquí para<br>agregar un producto de la marca<strong><?php echo($nombre_marca);?></strong><strong><img src='images/<?php echo($logo);?>'height='40px' alt=''></strong></div>"); 
+                                    
+                                }
+                                
+                            <?php
+                            }
+                            ?>
+
+                    <?php
+                        }
+                        $i++;
+                    }
+                } while ($row_bloqueo=mysql_fetch_array($result_bloqueo));
+                            
+            }   
+            ?>
+        });
+    </script>
+</head> 
+<body>
+   <div id="datacontainer" style="display:none;"></div>
+   <div class="page-container">
+   <!--/content-inner-->
+	<div class="left-content">
+	   <div class="inner-content">
+		<!-- header-starts -->
+			<div class="header-section">
+                <!-- top_bg -->
+                <?php include("includes/top.php"); ?>
+                <!-- /top_bg -->
+            </div>
+            <div class="header_bg" style="position:relative;">
+				<div class="header">
+								<div class="col-sm-offset-1 col-sm-10 col-xs-12">
+                                    <div class="row">
+                                        <div class="logo col-sm-2 col-xs-12" style="margin-top:0;">
+                                            <a href="home.php"><img src="images/logo_marquez.png" class="img-responsive" alt=""> </a>
+                                        </div>
+                                            <!-- start header_right -->
+                                        <div class="col-sm-10 col-xs-12 banner">
+                                            <img src="images/diseniar/paso1.png" class="img-responsive" alt="">
+                                        </div>
+                                    </div>
+								<div class="clearfix"> </div>
+							</div>
+				  </div>
+				  <a href="#end" id="btndown" title="Pie de p&aacute;gina"><img src="images/btn-down.png" alt=""></a>
+            </div>
+            <!-- //header-ends -->
+           <div id="wraprod"></div>
+           <div class="col-xs-12 titulogris">
+                <p class="col-xs-12"><img src="images/titulos/diseniar.png" class="img-responsive" alt=""> DISEÑAR - Editando P&Aacute;GINA 10</p>
+            </div>
+			<!-- Diseniar start-->
+            <div class="wrap-diseniar col-xs-12">
+                <div class="col-lg-12 col-md-12 col-xs-12">
+                    <!--START LATERAL-->
+                        <div id="lateral" class="lateral col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-right">
+                            <div class="row">
+                                <div class="editar_partes paginas16">
+                                    <ul>
+                                        <li><a id="ed_tapa" class="disabled" href="predis_diseniar-16-paginas.php" title="EDITAR TAPA">TAPA</a></li>
+                                        <li><a id="ed_contratapa" class="disabled" href="predis_diseniar-16-paginas_contratapa.php" title="EDITAR CONTRATAPA">CONTRATAPA</a></li>
+                                        <li><a id="ed_2" class="disabled" href="predis_diseniar-16-paginas_1.php" title="EDITAR PAGINA 2"><strong>2</strong></a></li>
+                                        <li><a id="ed_3" class="disabled" href="predis_diseniar-16-paginas_2.php" title="EDITAR PAGINA 3"><strong>3</strong></a></li>
+                                        <li><a id="ed_4" class="disabled" href="predis_diseniar-16-paginas_3.php" title="EDITAR PAGINA 4"><strong>4</strong></a></li>
+                                        <li><a id="ed_5" class="disabled" href="predis_diseniar-16-paginas_4.php" title="EDITAR PAGINA 5"><strong>5</strong></a></li>
+                                        <li><a id="ed_6" class="disabled" href="predis_diseniar-16-paginas_5.php" title="EDITAR PAGINA 6"><strong>6</strong></a></li>
+                                        <li><a id="ed_7" class="disabled" href="predis_diseniar-16-paginas_6.php" title="EDITAR PAGINA 7"><strong>7</strong></a></li>
+
+                                        <li><a id="ed_8" class="disabled" href="predis_diseniar-16-paginas_7.php" title="EDITAR PAGINA 8"><strong>8</strong></a></li>
+                                        <li><a id="ed_9" class="disabled" href="predis_diseniar-16-paginas_8.php" title="EDITAR PAGINA 9"><strong>9</strong></a></li>
+                                        <li><a id="ed_10" class="disabled activada" href="predis_diseniar-16-paginas_9.php" title="EDITAR PAGINA 10"><strong>10</strong></a></li>
+                                        <li><a id="ed_11" class="disabled" href="predis_diseniar-16-paginas_10.php" title="EDITAR PAGINA 11"><strong>11</strong></a></li>
+                                        <li><a id="ed_12" class="disabled" href="predis_diseniar-16-paginas_11.php" title="EDITAR PAGINA 12"><strong>12</strong></a></li>
+                                        <li><a id="ed_13" class="disabled" href="predis_diseniar-16-paginas_12.php" title="EDITAR PAGINA 13"><strong>13</strong></a></li>
+                                        <li><a id="ed_14" class="disabled" href="predis_diseniar-16-paginas_13.php" title="EDITAR PAGINA 14"><strong>14</strong></a></li>
+                                        <li><a id="ed_15" class="disabled" href="predis_diseniar-16-paginas_14.php" title="EDITAR PAGINA 15"><strong>15</strong></a></li>
+                                    </ul>
+                                    <p class="boton"><a title="VISTA PREVIA" class="preview" href="#" data-toggle="modal" data-target="#preview" data-backdrop="static" data-keyboard="true"><i class="fa fa-eye" aria-hidden="true"></i> VISTA PREVIA</a></p>
+                                    <p class="boton"><a title="GUARDAR AVANCE" class="guardar verde" href="#"><i class="fa fa-floppy-o" aria-hidden="true"></i> GUARDAR</a></p>
+                                    <p class="boton"><a title="CONTINUAR AL SIGUIENTE PASO" class="continuar disabled" href="#"><i class="fa fa-check-square-o" aria-hidden="true"></i> GUARDAR Y CONTINUAR</a></p>
+                                    <?php
+                                    if ($niveluser=='operador') {
+                                    ?>
+                                    <div class="aviso-predisenio"><p>APRETÁ GUARDAR Y CONTINUAR PARA CONFIRMAR CADA PÁGINA PREDISEÑADA Y LUEGO REALIZAR EL PEDIDO</p></div>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                    <!--END LATERAL-->
+                        <!--START FLYER-->
+                                <div id="flyercontainer">
+                                    <div id="pag10" class="wrap-flyer">
+                                        <div class="aramis"><?php echo($row_dir['cod_aramis']);?></div>
+                                        <div class="grupoproductos col-xs-12">
+                                            <div id="block1" class="un-cuarto">
+                                                <div id="uno" class="cajaproducto producto-final" txt-legales=""><a rel="1" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                                <div id="dos" class="cajaproducto producto-final" txt-legales=""><a rel="2" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                                <div id="tres" class="cajaproducto producto-final" txt-legales=""><a rel="3" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                            </div>
+                                            <div class="row separador-central" id="separador-1"><img style="width:100%;" src="images/diseniar/separador_gris-puntos.jpg" alt=""></div>
+                                            <div id="block2" class="un-cuarto">
+                                                <div id="cuatro" class="cajaproducto producto-final" txt-legales=""><a rel="4" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                                <div id="cinco" class="cajaproducto producto-final" txt-legales=""><a rel="5" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                                <div id="seis" class="cajaproducto producto-final" txt-legales=""><a rel="6" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                            </div>
+                                            <div class="row separador-central" id="separador-2"><img style="width:100%;" src="images/diseniar/separador_gris-puntos.jpg" alt=""></div>
+                                            <div id="block3" class="un-cuarto">
+                                                <div id="siete" class="cajaproducto producto-final" txt-legales=""><a rel="7" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                                <div id="ocho" class="cajaproducto producto-final" txt-legales=""><a rel="8" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                                <div id="nueve" class="cajaproducto producto-final" txt-legales=""><a rel="9" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                            </div>
+                                            <div class="row separador-central" id="separador-3"><img style="width:100%;" src="images/diseniar/separador_gris-puntos.jpg" alt=""></div>
+                                            <div id="block4" class="un-cuarto">
+                                                <div id="diez" class="cajaproducto producto-final" txt-legales=""><a rel="10" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                                <div id="once" class="cajaproducto producto-final" txt-legales=""><a rel="11" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                                <div id="doce" class="cajaproducto producto-final" txt-legales=""><a rel="12" class="insertar" href="productos.php" title="Insertar producto"></a></div>
+                                            </div>
+                                        </div>
+                                        <div class="bordebottom" id="end"><div class="logopie"><span>10</span></div><div class="legalespie">Los precios contado son v&aacute;lidos en efectivo, tarjeta de d&eacute;bito &oacute; tarjeta de cr&eacute;dito en 1 pago. Consulte por otros planes de financiaci&oacute;n. </div></div>
+                                        <div class="demasiapie"></div>
+                                    
+                                </div>
+                                <!--END FLYER-->
+
+                </div>
+            </div>
+            <!-- Diseniar end-->
+            <a href="#sidebar" id="btnup" title="Ir arriba"><img src="images/btn-up.png" alt=""></a>
+		</div>
+        </div>
+        <div id="idgpie" class="col-sm-offset-1 col-sm-10 col-xs-12 text-right">
+            <img src="images/idg.png" class="img-responsive pull-right" alt="IDG Identidad Grafica">
+            <p>Ideado y dise&ntilde;ado por IDG Identidad Gr&aacute;fica | &copy; Copyright | Todos los derechos reservados.</p>
+        </div>
+</div>
+<!-- Modal TARJETAS -->
+<div id="tarjetas" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+            <p style="margin:15px 15px 10px 40px; color:#242F7B;">Seleccion&aacute; una tarjeta para la financiaci&oacute;n de este producto:</p>
+            <ul class="listado-tarjetas">
+                 <?php
+                    $result_tarjetas=mysql_query("select tarjetas.Id AS id_tarj, tarjetas.nombre, tarjetas.logo from tarjetas, datos_financiacion WHERE tarjetas.Id = datos_financiacion.id_tarjeta GROUP BY nombre ORDER BY nombre ASC");
+                    if ($row_tarjetas=mysql_fetch_array($result_tarjetas)) {
+                        do {
+                ?>
+                        <li>
+                            <label>
+                                <input type="radio" name="opcion-tarjetas" value="<?php echo($row_tarjetas['id_tarj']); ?>">
+                                <img src="images/<?php echo($row_tarjetas['logo']); ?>" alt="<?php echo($row_tarjetas['nombre']); ?>">
+                            </label>
+                        </li>
+                    <?php
+                        } while ($row_tarjetas=mysql_fetch_array($result_tarjetas));	
+                    }
+                     ?>
+                                            
+            </ul>
+            <?php
+                $result_cp=mysql_query("select * from credito_personal WHERE usuario='$usuario' ORDER BY fecha DESC");
+                if ($row_cp=mysql_fetch_array($result_cp)) {
+            ?>
+            <p style="margin:15px 15px 10px 40px; color:#242F7B;">O seleccion&aacute; un Cr&eacute;dito Personal: <br><span class="small">(Para cargar tus propios planes de Crédito Personal guardá tu avance y entrá a la sección "CFT y TEA")</span></p>
+            <ul class="listado-tarjetas">
+                 <?php
+                        do {
+                ?>
+                        <li>
+                            <label>
+                                <input class="cp" type="radio" name="opcion-tarjetas" value="<?php echo($row_cp['Id']); ?>" cft="<?php echo($row_cp['cft']); ?>" tea="<?php echo($row_cp['tea']); ?>" coef="<?php echo($row_cp['coef']); ?>" cuotas="<?php echo($row_cp['cuotas']); ?>">
+                                <img src="images/tarjetas/credito-personal.jpg" alt="Credito Personal">
+                                <span><b><?php echo($row_cp['titulo']); ?></b><br> | CUOTAS: <?php echo($row_cp['cuotas']); ?> | TEA: <?php echo($row_cp['tea']); ?>% | CFT: <?php echo($row_cp['cft']); ?>%</span>
+                            </label>
+                        </li>
+                    <?php
+                        } while ($row_cp=mysql_fetch_array($result_cp));	
+                    }
+                     ?>
+                                            
+            </ul>
+      </div>
+    </div>
+    </div>
+</div>
+                    
+<!-- Modal BANCOS -->
+<div id="bancos" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+            <p style="margin:15px 15px 10px 40px; color:#242F7B;">Seleccion&aacute; un banco para la financiaci&oacute;n de este producto:</p>
+            <ul id="listado-bancos" class="listado-tarjetas">
+            </ul>
+            <div class="loading"></div>
+      </div>
+    </div>
+    </div>
+</div>
+
+<!-- Modal CUOTAS -->
+<div id="cuotas" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+            <p style="margin:15px 15px 10px 40px; color:#242F7B;">Seleccion&aacute; la cantidad de cuotas para la financiaci&oacute;n de este producto:</p>
+            <ul id="listado-cuotas" class="listado-tarjetas">
+            </ul>
+            <div class="loading"></div>
+      </div>
+    </div>
+    </div>
+</div>
+                    
+<!-- Modal CUCARDAS 1 -->
+<div id="cucardas1" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+            <div class="listado-cucardas"></div>
+            <div class="loading"></div>
+            <a class="btn btn-default eliminar-cucarda" href="#" title="Click aqui para eliminar esta cucarda"><img src="images/ico-cerrar_blanco.png" height="15"> ELIMINAR CUCARDA DE ESTE PRODUCTO</a>
+      </div>
+    </div>
+    </div>
+</div>
+
+<!-- Modal CUCARDAS 2 -->
+<div id="cucardas2" class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+            <div class="listado-cucardas"></div>
+            <div class="loading"></div>
+            <a class="btn btn-default eliminar-cucarda2" href="#" title="Click aqui para eliminar esta cucarda"><img src="images/ico-cerrar_blanco.png" height="15"> ELIMINAR CUCARDA DE ESTE PRODUCTO</a>
+      </div>
+    </div>
+    </div>
+</div>
+                    
+                    
+<!-- Modal -->
+<div id="preview" class="modal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" title="Cerrar">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+  
+<div id="editor" style="display:none;"></div>
+<div id="cargando"></div>
+       
+<!-- Smartsupp Live Chat script -->
+<script type="text/javascript">
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = 'db98655c3e6c648f144d70d2da5a717d56e8e076';
+window.smartsupp||(function(d) {
+	var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+	s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+	c.type='text/javascript';c.charset='utf-8';c.async=true;
+	c.src='//www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+})(document);
+</script>
+<!-- Ayuda Desplegable -->
+<div id="ayuda-despl">
+    <a href="#" id="ayuda-toggle" title="Click para ver las Preguntas Frecuentes"><img src="images/btn_desp-ayuda.png" class="img-responsive" alt="Ayuda" width="55"></a>
+    <div class="col-xs-12 contenedor">
+        <div class="row">
+            <p class="titulo">PREGUNTAS FRECUENTES</p>
+        </div>
+        <ul>
+            <li>
+                <div class="pregunta"><span>■</span> ¿Cómo hago para editar otras caras de la revista?</div>
+                <div class="respuesta">
+                    Podes navegar por cualquiera de las páginas que ya hayas diseñado. Del lado derecho de la pantalla verás unos rectángulos con el nombre de las páginas. Hacé click en la que necesites editar, modificala y luego apretá GUARDAR.
+                </div>
+            </li>
+            <li>
+                <div class="pregunta"><span>■</span> ¿Cómo quitar un producto de la revista?</div>
+                <div class="respuesta">
+                    Para quitar un productos del diseño de tu revista, solamente tenes que oprimir la X que se encuentra en la parte superior derecha del producto. Éste se eliminará dejando lugar para colocar otro.
+                </div>
+            </li>
+            <li>
+                <div class="pregunta"><span>■</span> ¿Cómo ponerle precio a un producto?</div>
+                <div class="respuesta">
+                    Una vez que hayas colocado un producto en el diseño de tu revista, debés colocarle el precio. Según el módulo en el que coloques el producto, tendrás la posibilidad de colocarle precio al contado o precio financiado.<br>
+                    Si elegís colocar un precio <strong>al contado</strong>, debes posicionar el mouse sobre la pastilla verde que contiene el signo $ y colocar los números correspondientes al precio que queres publicar.<br>
+                    Si elegís colocar un precio <strong>con financiación</strong>, debes posicionar el mouse sobre la pastilla verde que contiene el signo $ y colocar los números correspondientes al precio de CONTADO. Luego apretá el botón verde que dice “click para agregar una financiación”. Una vez hecho esto debes seleccionar la TARJETA, el BANCO y la CANTIDAD DE CUOTAS. El precio final de las cuotas se calcula automáticamente, lo verás en la pastilla de color celeste. ¡Y  listo! Si querés podes modificar el precio de contado y se cambiaran los valores de las cuotas y CFT.
+                </div>
+            </li>
+            <li>
+                <div class="pregunta"><span>■</span> ¿Qué es una cucarda?</div>
+                <div class="respuesta">
+                    Las cucardas son diseños predeterminados que podés agregarle a tus productos para destacar sus características principales. Podes elegir entre varios diseños. Si no seleccionás ninguna cucarda, ese espacio quedará en blanco.
+                </div>
+            </li>
+            <li>
+                <div class="pregunta"><span>■</span> El producto que quiero no está en la base de datos.</div>
+                <div class="respuesta">
+                    Si el producto que querés colocar en tu revista no está en la base de datos, podes agregarlo fácilmente. Si estas diseñando apretá GUARDAR para no perder los avances. En el menú de la izquierda verás un botón que dice  “carga de productos”, haciendo click allí, te encontrarás con un formulario para completar con las especificaciones del producto. Elegís la categoría, escribís el modelo, marca, origen  y descripción. Tendrás que cargar una foto del producto, es importante que la imagen tenga buena resolución y fondo blanco. Lo último que queda por hacer apretar el botón insertar ¡y listo! Tu producto ya está cargado y habilitado para usarlo en tu revista.
+                </div>
+            </li>
+            <li>
+                <div class="pregunta"><span>■</span> ¿Puedo guardar los avances del diseño?</div>
+                <div class="respuesta">
+                    El diseño se guardará una vez que oprimas el botón “guardar”. Si no oprimís este botón y salís del navegador o cerras sesión perderás lo avanzado hasta ahora. Si guardas tu diseño, cuando vuelvas a iniciar sesión deberás elegir si quieres continuar con el diseño que estabas realizando o si deseás comenzar uno nuevo.
+                </div>
+            </li>
+            <li>
+                <div class="pregunta"><span>■</span> ¿Puedo colocar una promoción personalizada?</div>
+                <div class="respuesta">
+                    Sí. En el menú que está a la izquierda de la pantalla, verás una opción que dice “Solicitar banner”. Allí podrás solicitar Promociones personalizadas según tus necesidades que serán colocadas en la web para que puedas utilizarla en tu diseño.
+                </div>
+            </li>
+            <li>
+                <div class="pregunta"><span>■</span> ¿Cómo hago para poner un crédito personal?</div>
+                <div class="respuesta">
+                    Si estás diseñando apretá el botón GUARDAR para no perder los avances. En el menú principal ingresá a la sección <strong>CFT Y TEA</strong>. Luego, en el botón <strong>CREDITO PERSONAL</strong>. Allípodés cargar los planes que ofrece su sucursal. Lo primero que debes hacer es colocarle un título al plan de crédito personal, por ejemplo: Plan 6 cuotas. Luego debes seleccionar del desplegable la cantidad de cuotas que incluye este plan. Ahora escribí el porcentaje de TEA y CFT. Por ultimo debes calcular el COEFICIENTE correspondiente para realizar el cálculo de las cuotas de tu plan. Apretá el botón aceptar. Con estos datos cargados podes ir a diseñar tu flyer y colocar este plan de financiación en los productos que te lo permitan.
+                </div>
+            </li>
+            <li>
+                <div class="pregunta"><span>■</span> No encuentro la respuesta a mi pregunta ¿Qué hago?</div>
+                <div class="respuesta">
+                    En caso de que tengas alguna duda podes comunicarte telefónicamente al (011) 4871.8184 ó escribirnos a través del chat online donde te brindaremos asesoramiento en tiempo real de Lunes a Viernes de 9 a 17hs. Si preferís que nos comuniquemos con vos dejanos tu nombre y tu teléfono, y lo haremos a la brevedad. 
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- // Ayuda Desplegable -->
+				<!--//content-inner-->
+			<!--/sidebar-menu-->
+            <?php include("includes/sidebar-menu.php"); ?>
+						
+							</div>
+							<script>
+							var toggle = true;
+										
+							$(".sidebar-icon").click(function() {                
+							  if (toggle)
+							  {
+								$(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+								$("#menu span").css({"position":"absolute"});
+							  }
+							  else
+							  {
+								$(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+								setTimeout(function() {
+								  $("#menu span").css({"position":"relative"});
+								}, 400);
+							  }
+											
+											toggle = !toggle;
+										});
+							</script>
+<!--js -->
+
+
+<!-- Bootstrap Core JavaScript -->
+   <script src="js/bootstrap.min.js"></script>
+   <!-- /Bootstrap Core JavaScript -->
+<script src="js/menu_jquery.js"></script>
+</body>
+</html>

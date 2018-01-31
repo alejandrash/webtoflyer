@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Ayuda interactiva ajustes de Hesk</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="help_style.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- next: 63 -->
+
+<h3>Ayuda interactiva ajustes de Hesk</h3>
+
+<p>&nbsp;</p>
+
+<a name="18"></a><p class="title">Hora del servidor (compensadar)</p>
+<p>Si la hora de tu servidor difiere de tu hora local, puedes establecer la diferencia horaria. Ejemplos:<br /><br />
+hora servidor: 12:30, hora local: 13:30, poner horas a <b>1</b> y minutos a <b>0</b><br />
+hora servidor: 12:30, hora local: 14:45, poner horas a <b>2</b> y minutos a <b>15</b><br />
+hora servidor: 12:30, hora local: 09:30, poner horas a <b>-3</b> y minutos a <b>0</b><br />
+hora servidor: 12:30, hora local: 11:00, poner horas a <b>-1</b> y minutos a <b>-30</b></p>
+
+<a name="19"></a><p class="title">Horario de Verano (Daylight saving)</p>
+<p>Establezca en <b>ON</b> si su país usa el horario de verano. Establezca en <b>OFF</b> para desactivar el horario de verano.</p>
+
+<p>¡NO activar esta opción si su servidor se ajusta automáticamente al horario de verano!</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+
+<a name="20"></a><p class="title">Formato Hora (Time format)</p>
+<p>Esta es la sintaxis de PHP para formato de fechas y horas mostradas por Hesk.</p>
+
+<p><span class="wrong">¡Utilice sólo un espacio en la sintaxis (seperando fecha y hora), Hesk utilizará ese espacio para romper fecha hora en dos líneas!</span></p>
+
+<p>Para conocer la sintaxis completa de fecha y hora consulte <a href="http://www.php.net/date" target="_blank">manuales PHP</a>. Algunos ejemplos que puede utilizar:</p>
+
+<table border="1" cellspacing="0" cellpadding="4">
+<tr>
+<td><b><i>Ajustes</i></b></td>
+<td><b><i>Resultados</i></b></td>
+</tr>
+<tr>
+<td><b>Y-m-d H:i:s</b></td>
+<td>2012-12-31 14:35:53</td>
+</tr>
+<tr>
+<td><b>d/m/Y H:i:s</b></td>
+<td>31/12/2012 14:35:53</td>
+</tr>
+<tr>
+<td><b>m-d-Y H:i:s</b></td>
+<td>12-31-2012 14:35:53</td>
+</tr>
+<tr>
+<td><b>j-M-Y H:i:s</b></td>
+<td>31-Dec-2012 14:35:53</td>
+</tr>
+<tr>
+<td><b>j-M-Y g:ia</b></td>
+<td>31-Dec-2012 2:35pm</td>
+</tr>
+</table>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+
+<a name="61"></a><p class="title">IP whois</p>
+<p>URL de el servicio que usará para hacer la consulta de <b>{IP whois}</b>.</p>
+<p>La etiqueta<b>{IP}</b> será reemplazada por la IP del cliente.</p>
+<p>Por defecto: http://whois.domaintools.com/{IP}</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+
+<a name="62"></a><p class="title">Modo mantenimiento (Maintenance mode)</p>
+<p>Poner el Centro de Soporte en Modo Mantenimiento.</p>
+<p>Los clientes no podrán usar ninguna función del Centro de Soporte. El personal (staff) será capaz de accder y utilizar el servicio de asistencai de forma normal.</p>
+<p><b>Nota:</b> El modo de mantenimiento se activa automáticamente si la carpeta <b>/install</b> existe.</p>
+<p><b>Importante:</b> POP3 fetching no estaría activo, pero email piping lo estaría (para evitar pérdidas de correos de clientes).</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar Ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+<a name="21"></a><p class="title">URL administración (Admin link)</p>
+<p>Si está seleccionado un enlace al PANEL DE ADMINISTRACIÓN será mostrado en la parte inferior del <a href="../../../" target="_blank">Índice del Centro de Soporte</a>.</p>
+
+<a name="48"></a><p class="title">Presentar Aviso (Submit notice)</p>
+<p>Si se selecciona, al <i>Envíar un ticket</i> desde el formulario se mostrará una nota en la parte inferior
+avisando al cliente  que vuelva a verificar toda su información y que por motivos de seguridad su dirección IP será guardada.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+
+<a name="56"></a><p class="title">Usuario en línea (Online Users)</p>
+<p>Si se marca HESK mostrará una lista de usuarios en línea en los últimos X minutos, en la parte inferior del Centro de Soporte en el interfaz del personal (staff).</p>
+
+<a name="59"></a><p class="title">Actualizaciones (Updates)</p>
+<p>Si está marcado, HESK comprobará automáticamente las actualizaciones disponibles cada vez que se abre la página de configuración.</p>
+<p>Para comprobar las actualizaciones automáticas tu servidor debe estar conectado a Internet y tener acceso ya sea vía cURL o tener activado <i>allow_url_fopen</i>.</p>
+<p>Si está deshabilitada esta opción o carece de las funciones requeridas, el método manual con su enlace &quot;Comprobar actualizaciones&quot; debería aparecer.</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+
+</html>
