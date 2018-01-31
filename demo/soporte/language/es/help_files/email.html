@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Ayuda interactiva para ajustes HESK</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="help_style.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- next: 67 -->
+
+<h3>Ayuda interactiva para ajustes HESK</h3>
+
+<p>&nbsp;</p>
+
+<a name="55"></a><p class="title">Enviar email (envíos) / Email sender</p>
+<p>Selecciona el método como HESK deberá enviar correos electrónicos, usando función PHP mail() o usando configuración manual de servidor SMTP.</p>
+
+<p>PHP mail() debería funcionar en la mayoría de las configuraciones, pero puede intentar la configuración de un servidor SMTP en su lugar.</p>
+
+<p>SMTP variables disponibles:</p>
+
+<p>
+<b>Servidor SMTP</b> - nombre de su servidor SMTP, normalmente <i>localhost</i> o <i>mail.sudominio.com</i><br />
+<b>Puerto SMTP</b> - puerto SMTP port, normalmente 25<br />
+<b>Tiempo espera SMTP</b> - tiempo de espera en segundos SMTP (timeout)<br />
+<b>Protocolo SSL</b> - habilitar si el servidor SMTP requiere el protocolo SSL<br />
+<b>Protocolo TSL</b> - habilitar si el servidor SMTP requiere protocolo TLS<br />
+<b>Usuario SMTP</b> -  usuario SMTP (username) si es requerido por el servidor<br />
+<b>Contraseña SMTP</b> - contraseña SMTP si es utilizada por su servidor<br />
+</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="54"></a><p class="title">Tuberías de correo electrónico (Email Piping)</p>
+
+<p>Habilitando "email piping" permitirá crear tickets desde correos electrónicos en HESK directamente.</p>
+
+<p>Esta opción permite sólo la funcionalidad de "email piping" en HESK. Para más información sobre EMAIL PIPING y su configuración, consulte el archivo readme.html.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="59"></a><p class="title">Recuperación POP3 (POP3 Fetching)</p>
+
+<p>Esta configuración activa o desactiva "POP3 FETCHING" o creación de entradas y mensajes de correo electrónico mediante la conexión a una cuenta de correo electrónico utilizando la conexión POP3.<p>
+
+<p>Para obtener instrucciones sobre cómo configurar "POP3 Fetching" consulte el archivo readme.html.</p>
+
+<p>Las variables disponibles son:</p>
+
+<p><b>Tiempo de espera de tarea (Task Timeout)</b> - número de minutos de espera para que una tarea POP3 sea completada. Ninguna nueva tarea "POP FETCHING" será generada hasta alcanzar ese tiempo máximo de espera.
+Poner en <b>0</b> para desactivar los tiempos de espera (timeouts) y siempre comenzar una nueva tarea "POP FETCHING".</p>
+
+<p>
+<b>Servidor POP3 (host)</b> - nombre de tu servidor POP3, por lo general <i>mail.yourdomain.com</i><br />
+<b>Puerto POP3</b> - tu puerto POP3, por lo general 110. Gmail, por ejemplo, utiliza 995<br />
+<b>TLS Protocolo</b> - habilitar si su servidor POP3 requiere cifrado o protocolo TLS<br />
+<b>Mantener copia</b> - si lo habilita, HESK <b>no</b> borrará sus correos del servidor POP3<br />
+<b>POP3 usuario</b> - su nombre de usuario your POP3 (username)<br />
+<b>POP3 clave</b> - su clave POP3 (password)<br />
+</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="60"></a><p class="title">Bucles de correo (Email Loops)</p>
+
+<p>Ajustes para ayudar a detectar bucles de correo electrónico creados a partir de respuestas automáticas o de correo electrónico que no se puede entregar.</p>
+
+<p>Cualquier número de correos superior a <b>Max Correos (Max. Hits)</b> desde una dirección de correo será ignorada por EMAIL PIPING durante el rango de tiempo <b>Rango Tiempo (Timeframe)</b> especificado en segundos.</p>
+
+<p>Ajuste <b>Max Correos (Max Hits)</b> a <b>0</b> para deshabilitar la detección de bucles de correo.</p>
+
+<p>Tenga en cuenta que esta función sólo será utilizada si está activada la tubería de correo electrónico(EMAIL PIPING) o RECUPERACION POP3 (POP Fetching).</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="62"></a><p class="title">Detectar errores tipográficos en direcciones correo electrónico</p>
+
+<p>Esta función tratará de detectar errores comunes ortográficos al introducción las cuentas de correos electrónico, sugiriendo la versión corregida.</p>
+
+<p>Por ejemplo, si el cliente introduce user@<span style="color:red"><b>gmial.com</b></span> HESK lo detectará y sugerirá
+user@<span style="color:green"><b>gmail.com</b></span> en su lugar.</p>
+
+<p>HESK comparará  los correos electrónicos introducidos con los dominios mencionados de <i>Proveedores de Email</i> listados.</p>
+
+<p>&nbsp;</p>
+
+<a name="63"></a><p class="title">Proveedores de Email (Email providers)</p>
+
+<p>Una lista de proveedores de correo electrónico (dominios) comunes que utilizan sus clientes. HESK utilizará esta lista para tratar de detectar direcciones de correo mal escritas.</p>
+
+<p>Introduzca un dominio por línea, <u>con</u> el signo @.</p>
+
+<p>Puede introducir cualquier cantidad de nombres de dominio, pero trate de no exagerar e introducir sólo los más comunes.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="65"></a><p class="title">Notificar al cliente cuando</p>
+
+<p>Se selecciona cuando HESK debe enviar una notificación por correo electrónico a los clientes:</p>
+
+<ul>
+<li><b>cuando el cliente genera un nuevo ticket de soporte</b><br /><br />
+Nota: si el ticket se genera por correo electrónico (EMAIL PIPING o POP3 FETCHING),
+HESK puede omitir el envío de una nueva notificación al cliente si el asunto del 
+correo electrónico contiene alguna de las etiquetas listadas en la caja de texto
+(una etiqueta por línea).<br /><br />
+Puedes usar eso para evitar las respuestas automáticas de correo detectados como SPAM
+por los posibles filtros de tu servidor de correo.<br />&nbsp;
+</li>
+<li><b>cuando un ticket de soporte es marcado como RESUELTO</b> (sin contestación)</li>
+</ul>
+
+<p>&nbsp;</p>
+
+<p>Nota: Tenga en cuenta que la preferencias de notificación se ajustan individualmente por cada ticket
+cuando el personal responde a un ticket o cuando el personal genera un ticket en el interfaz de administración.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="61"></a><p class="title">Eliminar citado en respuesta:</p>
+
+<p>Esta función elimina todas las respuestas citadas del correo de los clientes, antes de que se conviertan en un ticket utilizando la opción de EMAIL PIPING o de POP3 FETCHING.</p>
+
+<p>Todos los correos electrónicos enviados a los clientes comenzarán con esta línea (responder encima de esta línea):</p>
+
+<p>------ Reply above this line ------</p>
+
+<p>Cualquier texto por debajo de esta línea será borrada al importar el correo para la creación de una respuesta a los tickets.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="66"></a><p class="title">Requerir mensaje</p>
+
+<p>Si está activado, los correos desde EMAIL PIPING y de POP3 FETCHING serán ignorados si ellos no contienen un mensaje.</p>
+
+<p>Si está desactivado, incluso los correos sin mensaje serán convertidos a tickets/p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="64"></a><p class="title">Archivos incrustados</p>
+
+<p>Habilitar si desea que HESK salve los ficheros incrustados en los correos electrónicos (por ejemplo, las imágenes incrustadas) como archivos adjuntos al importar entradas por EMAIL PIPING o POP3 FETCHING.</p>
+
+<p>Los archivos de más límite máximo permitido adjuntos serán ignorados.</p>
+
+<p>Tenga en cuenta que HESK dará prioridad a los archivos anexados antes que a los archivos incrustados. Por ejemplo, si usted permite en su configuración 2 archivos anexados y recibe por correo 1 fichero anexado 
+y 3 imágenes incrustadas, HESK salvará el fichero anexado y la primera imagen incrustada, siendo el resto ignoradas.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="57"></a><p class="title">Múltiples emails</p>
+<p>Por defecto si un cliente intenta introducir varios correos electrónicos separados por comas, en el campo EMAIL cuando crea un tiket en HESK
+sólo se tendrá en cuenta el primero y el resto serán ignorados.</p>
+
+<p>Para permitir el uso a los clientes de varios correos electrónicos debe marcar la casilla de la funcionalidad.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="50"></a><p class="title">Confirmar email</p>
+<p>Si selecciona esta opción, el formulario &quot;Envíar un ticket&quot; mostrará un campo &quot;Confirmar email&quot;
+donde el cliente tendrá que que volver a escribir su email. Esto ayuda a evitar errores ortográficos.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<a name="58"></a><p class="title">Sólo Abiertos</p>
+<p>Si está marcado, cuando se use la opción &quot;Olvidé mi ticket ID&quot; serán enviados al correo del cliente los IDs de rastreo de sus tickets
+pero el listado será sólo de los abiertos y serán ingnorados los cerrados o resueltos.</p>
+
+<p>&nbsp;</p>
+
+<p align="center"><a href="#" onclick="Javascript:window.close()">Cerrar ventana</a></p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+</body>
+
+</html>
