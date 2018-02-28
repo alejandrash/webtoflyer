@@ -43,6 +43,7 @@ if (!isset($niveluser)) {
                                         <!--<li><a href="publicitarios.php" title="Avisos Publicitarios"><i class="fa fa-table" aria-hidden="true"></i> <span>Avisos Publicitarios</span></a></li>
                                         <li><a href="aviso-bloquear.php" title="Bloquear Marcas"><i class="fa fa-lock" aria-hidden="true"></i> <span>Bloquear Marcas</span></a></li>-->
                                         <li><a href="datos-financiacion.php" title="CFT y TEA"><i class="fa fa-calculator" aria-hidden="true"></i> <span>CFT y TEA</span></a></li>
+                                        <li><a href="redes.php" title="Redes"><i class="fa fa-share-alt" aria-hidden="true"></i> <span>Redes</span></a></li>
                                         <li><a href="cartel-precios.php" title="Cartel de Precios"><i class="fa fa-tag" aria-hidden="true"></i> <span>Cartel de Precios</span></a></li>
                                         <li><a href="marquez-in.php" title="Intranet"><img src="images/menu/marquezin_mobile.png"> <span>Intranet</span></a></li>
                                         <li><a href="estadisticas.php"><img src="images/menu/estadisticas.png"> <span>Estad&iacute;sticas</span></a></li>
@@ -52,6 +53,7 @@ if (!isset($niveluser)) {
                                         ?>
                                         <li><a href="solicitar-promos.php" title="Solicitar Banner"><img src="images/menu/promos.png"> <span>Solicitar Banner</span></a></li>
                                         <li><a href="datos-financiacion.php" title="CFT y TEA"><i class="fa fa-calculator" aria-hidden="true"></i> <span>CFT y TEA</span></a></li>
+                                        <li><a href="redes.php" title="Redes"><i class="fa fa-share-alt" aria-hidden="true"></i> <span>Redes</span></a></li>
                                         <li><a href="cartel-precios.php" title="Cartel de Precios"><i class="fa fa-tag" aria-hidden="true"></i> <span>Cartel de Precios</span></a></li>
                                         <li><a href="descargar-material.php" title="Intranet"><img src="images/menu/marquezin_mobile.png"> <span>Intranet</span></a></li>
                                         <li><a href="lista-precios.php" title="Precios VIGENTES"><i class="fa fa-usd"></i> <span>Precios Vigentes</span></a></li>

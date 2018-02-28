@@ -117,10 +117,10 @@
 	color:#fff!important;
 	background:#18b7d3;
 }
-#modal-chequeo.celeste .modal-content:before, #modal-ya.celeste .modal-content:before {
+#modal-chequeo.celeste .modal-content:before, #modal-ya.celeste .modal-content:before, #modal-errorinstagram .modal-content:before {
   background: url('../images/bg_cara_feliz_celeste.png') no-repeat 0px 0px;
 }
-#modal-chequeo.celeste a.close {
+#modal-chequeo.celeste a.close, #modal-errorinstagram a.close {
 	width:137px;
   height: 58px;
   background: url('../images/btn-ok.png') no-repeat 0px 0px;
@@ -134,6 +134,13 @@
 #modal-ya .iconos-redes li {
 	float:none;
 	display: inline-block;
+}
+#modal-errorinstagram .btn-celeste {
+	border:0;
+	color:#FFF!important;
+	padding-top: 0;
+	font-weight: bold;
+	float:right;
 }
 .botonera-acciones .titulo-seccion, .botonera-acciones .tituloseccion {
 	color:#FFF;
@@ -244,8 +251,18 @@
 	height: 500px;
 	background: url('../images/bg_empty_facebook_gratuito.png') no-repeat center top;
 	background-size: contain;
+	position: relative;
+	left:-15px;
 }
-#plantilla-grat {
+#base-empty-paga {
+	width:1200px;
+	height: 315px;
+	background: url('../images/bg_empty_facebook_pago.png') no-repeat center top;
+	background-size: contain;
+	position: relative;
+	left:-15px;
+}
+#plantilla-grat, #plantilla-paga {
 	background: #fff;
 	position: absolute;
 	left:0;
@@ -255,8 +272,9 @@
 	box-sizing: border-box;
 	border:1px solid #ccc;
 	padding:0;
-	margin:0 15px;
+	margin:0;
 }
+#plantilla-paga {width:602px; height: 317px;}
 #disepred {
 	background: #fff;
 	background-size:cover;
@@ -267,9 +285,9 @@
 	height: 500px;
 	box-sizing: border-box;
 	padding:0;
-	margin:0 15px;
+	margin:0;
 }
-#plantilla-grat .insertar {
+#plantilla-grat .insertar, #plantilla-paga .insertar {
 	width: 500px;
 	height: 386px;
 	clear: both;
@@ -280,8 +298,9 @@
 	cursor: pointer;
 	display: block;
 }
-#plantilla-grat .insertar:hover {background: #FFF url('../images/bg_insertar_redes_over.png') no-repeat center center;}
-#plantilla-grat .quitar {
+#plantilla-paga .insertar {width:600px; height: 315px;}
+#plantilla-grat .insertar:hover, #plantilla-paga .insertar:hover {background: #FFF url('../images/bg_insertar_redes_over.png') no-repeat center center;}
+#plantilla-grat .quitar, #plantilla-paga .quitar {
     position: absolute;
     right: 0;
     top:0;
@@ -297,7 +316,7 @@
     font-family: 'Roboto', sans-serif;
     z-index: 121;
 }
-#plantilla-grat .overlay {
+#plantilla-grat .overlay, #plantilla-paga .overlay {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -307,7 +326,7 @@
     top:0;
     display: none;
 }
-#plantilla-grat .overlay i {
+#plantilla-grat .overlay i, #plantilla-paga .overlay i {
     position: absolute;
     left: 50%;
     top: 30%;
@@ -315,7 +334,7 @@
     font-size: 80px;
     margin-left: -32px;
 }
-#plantilla-grat .contiene {
+#plantilla-grat .contiene, #plantilla-paga .contiene {
 	width: 500px;
 	height: 386px;
 	clear: both;
@@ -325,6 +344,10 @@
 	position: relative;
 	display: none;
 }
+#plantilla-paga .contiene {width:100%; height: 100%;}
+
+
+
 .contiene .titulo {
 	font-size:19px;
 	font-family: 'Roboto Condensed';

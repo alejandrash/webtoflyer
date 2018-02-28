@@ -8301,11 +8301,11 @@ body.homepage {
   padding:0 0 0 10px!important;
   color:#FFF;
 }
-#modal-chequeo, #modal-ya {
+#modal-chequeo, #modal-ya, #modal-errorinstagram {
   font-family: Roboto condensed;
   color:#3f4652;
 }
-#modal-chequeo h2, #modal-ya h2 {
+#modal-chequeo h2, #modal-ya h2, #modal-errorinstagram h2 {
   text-align: center;
   font-size:20px;
   margin:0;
@@ -8316,8 +8316,8 @@ body.homepage {
   color:#7ac643;
   margin-bottom: 20px;
 }
-#modal-ya h2.celeste {color:#18b7d4; font-weight: bold; margin-bottom: 10px;}
-#modal-chequeo p, #modal-ya p {
+#modal-ya h2.celeste, #modal-errorinstagram h2 {color:#18b7d4; font-weight: bold; margin-bottom: 10px;}
+#modal-chequeo p, #modal-ya p, #modal-errorinstagram p {
   font-family: Roboto condensed;
   padding-left: 22px;
   background: url('../images/tilde_chequeo.png') no-repeat left top;
@@ -8329,7 +8329,7 @@ body.homepage {
   padding-left: 0;
   margin:0;
 }
-#modal-chequeo a.close, #modal-ya a.close {
+#modal-chequeo a.close, #modal-ya a.close, #modal-errorinstagram a.close, #modal-errorinstagram .btn-celeste {
   width:144px;
   height: 32px;
   background: url('../images/btn_fondoverde.png') no-repeat 0px 0px;
@@ -8341,19 +8341,19 @@ body.homepage {
   margin-bottom: 15px;
   opacity:1!important;
 }
-#modal-ya a.close {
+#modal-ya a.close, #modal-errorinstagram a.close, #modal-errorinstagram .btn-celeste {
   width:125px;
   background: url('../images/btn_fondoceleste.png') no-repeat 0px 0px;
 }
-#modal-chequeo .modal-body, #modal-ya .modal-body {
+#modal-chequeo .modal-body, #modal-ya .modal-body, #modal-errorinstagram .modal-body {
   padding:30px 20px 5px 20px!important;
   position: relative;
 }
-#modal-chequeo .modal-content, #modal-ya .modal-content {
+#modal-chequeo .modal-content, #modal-ya .modal-content, #modal-errorinstagram .modal-content {
   width:464px!important;
   float:right;
 }
-#modal-chequeo .modal-content:before, #modal-ya .modal-content:before {
+#modal-chequeo .modal-content:before, #modal-ya .modal-content:before, #modal-errorinstagram .modal-content:before {
   width:136px;
   height:108px;
   content:"";

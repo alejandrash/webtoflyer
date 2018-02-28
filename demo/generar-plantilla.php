@@ -40,7 +40,7 @@ $plantillafinal = "<!DOCTYPE HTML><html><head><title>WEB TO FLYER</title><meta h
 
 
 //$md5hash = md5($url."berazain");
-$url = " http://do.convertapi.com/Web2Image?OutputFileName=FB_seguidores&curl=".$url."?&PageWidth=500&PageHeight=500&JpgQuality=100&ApiKey=855890385";
+$url = " http://do.convertapi.com/Web2Image?OutputFileName=WTF_publicacion&curl=".$url."?&PageWidth=500&PageHeight=500&JpgQuality=100&ApiKey=855890385";
 //$url = "http://api.pdflayer.com/api/convert?access_key=64fed91fc5157e21bb8cca93fdbf18ff&document_url=".$url."&secret_key=".$md5hash."&page_size=A4&margin_top=0&margin_bottom=0&margin_left=0&margin_right=0&dpi=1000&ttl=300&force=1&document_name=plantilla_seguidores_".$fecha.".jpg";
 
 print_r($url);

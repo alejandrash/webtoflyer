@@ -305,6 +305,24 @@ header("Content-Type:text/html; charset=utf-8");
             }, 5000);
         });
 
+        //Compartir en Facebook
+        $('#modal-ya').on('click', '.facebook a', function(e) { 
+            e.preventDefault(); 
+            var urlcompartir = $(this).attr('href');
+            window.popup = window.open(urlcompartir,'ventanacompartir', 'toolbar=0, status=0, width=650, height=650');
+            $('#modal-ya .facebook').css('display', 'none');
+            var cuantosquedan = $("#modal-ya .iconos-redes li:visible").length;
+            if (cuantosquedan == 0) {
+                $('#modal-ya').modal('hide');
+                swal("Listo", "Serás redirido a la Home en 1 segundo. ¡Gracias!", "success");
+                setTimeout(
+                    function() 
+                    {
+                        window.location.href = "home.php";
+                    }, 5000);
+            }
+        });
+
         // CLICK en Insertar
         $('#plantilla-grat').on('click', '.insertar', function() {  
             var contenido = $('#wraprod').html();
@@ -1257,24 +1275,54 @@ function Convert() {
                                 },
                                 success: function(data2) { 
                                     var txtsuge = $('#descripcion').val();
-                                    $('#cargando').fadeOut(); 
+
+                                    //var rut = $('#modal-ya .instagram a').attr('href');
+                                    var correo = '<?php echo $_SESSION['ESTADO']?>';
+                                            $.ajax({
+                                                type: "POST",
+                                                url: 'mailinstagram.php',
+                                                dataType: "html",
+                                                data: {
+                                                    'ruta': data2,
+                                                    'usuario': correo
+                                                },
+                                                success: function(data) { 
+                                                    $('#cargando').fadeOut();
+                                                    console.log(data);
+                                                    if (data == '0') {
+                                                        $('#modal-ya .instagram').css('display', 'none');
+                                                        swal("Listo", "Revisá tu mail para compartir en Instagram. ¡Gracias!", "success");
+                                                        var cuantosquedan = $("#modal-ya .iconos-redes li:visible").length;
+                                                        if (cuantosquedan == 0) {
+                                                            $('#modal-ya').modal('hide');
+                                                            swal("Listo", "Serás redirigido a la Home en 1 segundo. ¡Gracias!", "success");
+                                                            setTimeout(
+                                                            function() 
+                                                            {
+                                                                window.location.href = "home.php";
+                                                            }, 5000);
+                                                        }
+                                                    }
+                                                    if (data == '1') {
+                                                        $('#modal-errorinstagram').modal('show');
+                                                    }
+                                                }
+                                            });
+
                                     var urlcompartir = "http://www.facebook.com/sharer.php?s=100&p[url]="+data2+"?&p[images][0]="+data2+"";
-                                    window.popup = window.open(urlcompartir,'ventanacompartir', 'toolbar=0, status=0, width=650, height=650');
                                     $("#enlace").attr('href',urlcompartir);
-                                    //var evt = document.createEvent("MouseEvents");
-                                    //  evt.initMouseEvent("click", true, true, window,
-                                    //    0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                                    //  var a = document.getElementById("enlace"); 
+
                                       urlinstagram = data2.replace('.html', '.jpg');
                                       urlwhatsapp = "https://api.whatsapp.com/send?text="+txtsuge+" "+urlinstagram+"";
+                                      urlfacebook = urlcompartir;
                                     //  a.dispatchEvent(evt); 
-                                        setTimeout(
-                                          function() 
-                                          {
+                                        //setTimeout(
+                                         // function() 
+                                        //  {
                                             $('#modal-ya .whatsapp a').attr('href', urlwhatsapp);
-                                            $('#modal-ya .instagram a').attr('href', urlinstagram)
+                                            $('#modal-ya .facebook a').attr('href', urlfacebook);
                                             $('#modal-ya').modal('show');
-                                          }, 5000);
+                                        //  }, 5000);
                                     return false;
                                 }
                         });
@@ -1316,7 +1364,7 @@ function Convert() {
             </div>
             <!-- //header-ends -->
             <div class="col-xs-12 titulogris">
-                        <p class="col-xs-12"><img src="images/titulos/facebook.png" class="img-responsive" alt="">Diseñando publicación para Facebook</p>
+                        <p class="col-xs-12"><img src="images/titulos/facebook.png" class="img-responsive" alt="">Diseñando publicación para Instagram</p>
             </div>
 
             <div id="wraprod"></div>
@@ -1683,7 +1731,7 @@ function Convert() {
             <p class="sin">¿Querés alcanzar a más personas?</p>
             <p class="sin"><strong>Compartilo también en:</strong></p>
             <ul class="iconos-redes">
-                <li class="instagram"><a href="#"><img src="images/icono_instagram.png" class="img-responsive" alt="Instagram"> Instagram</a></li>
+                <li class="facebook"><a href="#"><img src="images/icono_facebook.png" class="img-responsive" alt="Facebook"> Facebook</a></li>
                 <li class="whatsapp"><a href="#" target="_blank"><img src="images/icono_whatsapp.png" class="img-responsive" alt="Whatsapp"> Whatsapp</a></li>
             </ul>
             <a href="#" class="close" data-dismiss="modal">N0, GRACIAS</a>

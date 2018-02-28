@@ -76,8 +76,8 @@ header("Content-Type:text/html; charset=utf-8");
                         <h2 class="texto-globo">¿En qué Red Social quisieras realizar tu publicación?</h2>
                         <ul class="iconos-redes">
                             <li><a href="red-facebook.php"><img src="images/icono_facebook.png" class="img-responsive" alt="Facebook"> Facebook <a class="link-portadas" href="portadas-facebook.php"></a></li>
-                            <li><a href="red-otros.php"><img src="images/icono_instagram.png" class="img-responsive" alt="Instagram"> Instagram</li>
-                            <li><a href="red-otros.php"><img src="images/icono_whatsapp.png" class="img-responsive" alt="Whatsapp"> Whatsapp</li>
+                            <li><a href="red-instagram.php"><img src="images/icono_instagram.png" class="img-responsive" alt="Instagram"> Instagram</li>
+                            <li><a href="red-whatsapp.php"><img src="images/icono_whatsapp.png" class="img-responsive" alt="Whatsapp"> Whatsapp</li>
                         </ul>
                     </div>
                 </div>

@@ -1316,7 +1316,7 @@ function Convert() {
             </div>
             <!-- //header-ends -->
             <div class="col-xs-12 titulogris">
-                        <p class="col-xs-12"><img src="images/titulos/facebook.png" class="img-responsive" alt="">Diseñando publicación para Facebook</p>
+                        <p class="col-xs-12"><img src="images/titulos/facebook.png" class="img-responsive" alt="">Diseñando publicación patrocinada para Facebook</p>
             </div>
 
             <div id="wraprod"></div>
@@ -1325,7 +1325,7 @@ function Convert() {
                 <!-- Botonera Acciones start-->
                 <div class="botonera-acciones col-lg-2 col-md-2 col-sm-12 col-xs-12">
                     <?php 
-                        $result_plantilla=mysql_query("select * from redes_plantilla_facebook WHERE tipo='gratuita'");
+                        $result_plantilla=mysql_query("select * from redes_plantilla_facebook WHERE tipo='paga'");
                         if ($row_plantilla=mysql_fetch_array($result_plantilla)) {
                     ?>
                     <ul>
@@ -1333,7 +1333,7 @@ function Convert() {
                     </ul>
                     <?php 
                     }
-                            $result_pred=mysql_query("select * from redes_predeterminados WHERE tipo='gratuita'");
+                            $result_pred=mysql_query("select * from redes_predeterminados WHERE tipo='paga'");
                             if ($row_pred=mysql_fetch_array($result_pred)) {
                     ?>
                     <ul>
@@ -1351,7 +1351,7 @@ function Convert() {
                     <?php 
                         }
 
-                        $result_gifs=mysql_query("select * from redes_gifs WHERE tipo='gratuita'");
+                        $result_gifs=mysql_query("select * from redes_gifs WHERE tipo='paga'");
                         if ($row_gifs=mysql_fetch_array($result_gifs)) {
                     ?>
                     <ul>
@@ -1375,14 +1375,14 @@ function Convert() {
                 <div class="wrap-container col-lg-10 col-md-10 col-sm-12 col-xs-12" style="padding-left: 15px;">
                     
                     <div class="wrap-facebook">
-                        <div id="base-empty-grat" class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+                        <div id="base-empty-paga" class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
                         </div>
                         <div id="forprevia">
                             <?php 
                                 mysql_data_seek($result_plantilla, 0);
                                 if ($row_plantilla=mysql_fetch_array($result_plantilla)) {
                                     ?>
-                                        <div id="plantilla-grat" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="display: none;">
+                                        <div id="plantilla-paga" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="display: none;">
                                             <img src="redes/<?php echo($row_plantilla['banner']); ?>" style="float:left;" height="114" width="500" alt="">
                                             <!--.contiene-->
                                             <div class="contiene" style="background-image: url(redes/<?php echo($row_plantilla['fondo']); ?>);">
