@@ -43,7 +43,7 @@ header("Content-Type:text/html; charset=utf-8");
 <script src="js/funciones.js"></script>
 <script src="js/redes.js"></script>
 <script type="text/javascript">   
-     var idcucarda ='plantilla-grat';
+     var idcucarda ='plantilla-paga';
 
      $(window).load(function(){
         SameHeight('.listado-prod li.col-md-5ths .content');
@@ -92,7 +92,7 @@ header("Content-Type:text/html; charset=utf-8");
         //Abrir Cerrar Titulo Seccion Plantilla
         $(".botonera-acciones .plantilla").click(function() {
             var abrir = $(this).attr('data-link');
-            $('#disepred').css('display', 'none');
+            $('#disepred-paga').css('display', 'none');
             $(abrir).fadeIn();
             $('.texto_desc').fadeIn();
         });
@@ -107,16 +107,16 @@ header("Content-Type:text/html; charset=utf-8");
         $(".lista-scroll .predet").click(function(e) {
             e.preventDefault();
             var ruta = $(this).attr('href');
-            $('#disepred').css('background-image', 'url(' + ruta + ')');
+            $('#disepred-paga').css('background-image', 'url(' + ruta + ')');
             $('.descargar').attr('href', ruta);
             $('.preview, .compartir, .descargar, .eliminar').removeClass('disabled');
-            $('#plantilla-grat').css('display', 'none');
-            $('.texto_desc, #disepred').fadeIn();
+            $('#plantilla-paga').css('display', 'none');
+            $('.texto_desc, #disepred-paga').fadeIn();
             $('#fotoampliada .modal-body img').attr('src', ruta);
             var idimg = $(this).attr('rel');
             $.ajax({
                 type: "POST",
-                url: 'sugeridos.php',
+                url: 'sugeridos-paga.php',
                 dataType: "html",
                 data: {
                     'estado': 2,
@@ -194,7 +194,7 @@ header("Content-Type:text/html; charset=utf-8");
             },
             function(isConfirm) {
                 if (isConfirm) {
-                    window.location.href = 'red-facebook-seguidores.php';
+                    window.location.href = 'red-facebook-nuevas.php';
                 }
                 else {
                     return false;
@@ -204,40 +204,14 @@ header("Content-Type:text/html; charset=utf-8");
         });
 
         //Enviar mail para Compartir en Instagram
-        $('#modal-ya').on('click', '.instagram a', function(e) { 
+        $('#modal-ya').on('click', 'a.close', function(e) { 
             e.preventDefault(); 
-            var rut = $(this).attr('href');
-            var correo = '<?php echo $_SESSION['ESTADO']?>';
-            $('#cargando').fadeIn();
-                    $.ajax({
-                        type: "POST",
-                        url: 'mailinstagram.php',
-                        dataType: "html",
-                        data: {
-                            'ruta': rut,
-                            'usuario': correo
-                        },
-                        success: function(data) { 
-                            $('#cargando').fadeOut();
-                            if (data == '0') {
-                                $('#modal-ya .instagram').css('display', 'none');
-                                swal("Listo", "Revisá tu mail para compartir en Instagram. ¡Gracias!", "success");
-                                var cuantosquedan = $("#modal-ya .iconos-redes li:visible").length;
-                                if (cuantosquedan == 0) {
-                                    $('#modal-ya').modal('hide');
-                                    swal("Listo", "Serás redirigido a la Home en 1 segundo. ¡Gracias!", "success");
-                                    setTimeout(
+            swal("Listo", "Serás redirido a la Home en 1 segundo. ¡Gracias!", "success");
+                                setTimeout(
                                     function() 
                                     {
                                         window.location.href = "home.php";
                                     }, 5000);
-                                }
-                            }
-                            if (data == '1') {
-                                $('#modal-errorinstagram').modal('show');
-                            }
-                        }
-                    });
         });
 
         // CLICKs en Enviar Mail de Instagram (caso mail vacio)
@@ -306,7 +280,7 @@ header("Content-Type:text/html; charset=utf-8");
         });
 
         // CLICK en Insertar
-        $('#plantilla-grat').on('click', '.insertar', function() {  
+        $('#plantilla-paga').on('click', '.insertar', function() {  
             var contenido = $('#wraprod').html();
             if (contenido == '') {
                     $("#wraprod").load( "productos-inner_redes.php", function() {
@@ -368,13 +342,13 @@ header("Content-Type:text/html; charset=utf-8");
         $('#wraprod').on('click', ':checkbox', function() { 
             var checkValor = $(this).val();
             $("html, body").animate({
-                scrollTop: $("#plantilla-grat").offset().top
+                scrollTop: $("#plantilla-paga").offset().top
             }, 800);
             
             $('#cargando').fadeIn();
                     $.ajax({
                         type: "POST",
-                        url: 'plantilla-facebook-gratuita.php',
+                        url: 'plantilla-facebook-paga.php',
                         dataType: "html",
                         data: {
                             'id': checkValor
@@ -421,15 +395,15 @@ header("Content-Type:text/html; charset=utf-8");
         });
     
         // OVER ELIMINAR
-        $('#plantilla-grat').on('mouseenter', '.quitar', function() { 
+        $('#plantilla-paga').on('mouseenter', '.quitar', function() { 
               $('.contiene').children('.overlay').fadeIn();   
         });
-        $('#plantilla-grat').on('mouseleave', '.quitar', function() { 
+        $('#plantilla-paga').on('mouseleave', '.quitar', function() { 
               $('.contiene').children('.overlay').css('display','none'); 
         });
             
             // ELIMINAR Producto de Flyer
-        $('#plantilla-grat').on('click', '.quitar', function() { 
+        $('#plantilla-paga').on('click', '.quitar', function() { 
                 var quitar = $(this).attr('id');
                 $('.contiene').removeClass('financiado');
                 $('.contiene').css('display', 'none');
@@ -610,7 +584,7 @@ header("Content-Type:text/html; charset=utf-8");
                 window.location.href = "index.php";
             }
             var estadoPri = $('.contiene .bottom').children('input').val();
-            var estadoDiv = $('#plantilla-grat').css('display');
+            var estadoDiv = $('#plantilla-paga').css('display');
             if ((estadoPri == '$0,00') && (estadoDiv == 'block')) {
                 swal("Error", "Completa el PRECIO CONTADO antes de continuar.", "error");
                 return false;
@@ -627,23 +601,22 @@ header("Content-Type:text/html; charset=utf-8");
                 $('#editor .contiene .selecucarda span').css('display', 'none'); 
                 var content = $("#editor").html(); 
                 content = content.replace(/images/g, "../../images");
-                content = content.replace(/images/g, "../../images");
                 content = content.replace(/redes/g, "../../redes");
                 content = content.replace(/flyer/g, "../../flyer");
                 var fecha = '<?php echo(date("Y-m-d_His")); ?>';
                 //var name = '<?php //echo("flyer/plantillas/plantilla_seguidores_".date('m-d-Y_hia')); ?>';
                 var desc = $("#descripcion").val();
-                var title = $(".contiene .titulo").html();
+                //var title = $(".contiene .titulo").html();
                 $.ajax({
                     type: "POST",
                     dataType : "html",
-                    url: "generar-plantilla.php",
+                    url: "generar-plantilla-paga.php",
                     data: {
                         plantilla: content,
                         fecha: fecha,
                         name: name,
-                        desc: desc,
-                        titulo: title
+                        desc: desc
+                        //titulo: title
                     },
                     success: function(data){
                         $("#enlace").attr('href',data);
@@ -666,7 +639,7 @@ header("Content-Type:text/html; charset=utf-8");
         $(".compartir").click(function(e) { 
             e.preventDefault();
             var estadoPri = $('.contiene .bottom').children('input').val();
-            var estadoDiv = $('#plantilla-grat').css('display');
+            var estadoDiv = $('#plantilla-paga').css('display');
             if ((estadoPri == '$0,00') && (estadoDiv == 'block')) {
                 swal("Error", "Completa el PRECIO CONTADO antes de continuar.", "error");
                 return false;
@@ -689,17 +662,17 @@ header("Content-Type:text/html; charset=utf-8");
                 var fecha = '<?php echo(date("Y-m-d_His")); ?>';
                 //var name = '<?php //echo("flyer/plantillas/plantilla_seguidores_".date('m-d-Y_hia')); ?>';
                 var descri = $("#descripcion").val();
-                var title = $(".contiene .titulo").html();
+                //var title = $(".contiene .titulo").html();
                 $.ajax({
                     type: "POST",
                     dataType : "html",
-                    url: "generar-plantilla-compartir.php",
+                    url: "generar-plantilla-compartir-paga.php",
                     data: {
                         plantilla: content,
                         fecha: fecha,
                         name: name,
-                        desc: descri,
-                        titulo: title
+                        desc: descri
+                       //titulo: title
                     },
                     success: function(data){
                         $('#dato').val(data);
@@ -1236,7 +1209,7 @@ header("Content-Type:text/html; charset=utf-8");
     });
 
 function Convert() {
-        convertParameter = "storefile=true&PageNo=true&PageWidth=500&PageHeight=500&JpgQuality=100";
+        convertParameter = "storefile=true&PageNo=true&PageWidth=1200&PageHeight=630&JpgQuality=100";
         convertParameter = convertParameter  + "&OutputFileName=" + name; 
         convertParameter = convertParameter  + "&curl=" + encodeURI(jQuery('#dato').val()); 
         convertParameter = convertParameter  + "&ApiKey=855890385";
@@ -1265,14 +1238,12 @@ function Convert() {
                                     //  evt.initMouseEvent("click", true, true, window,
                                     //    0, 0, 0, 0, 0, false, false, false, false, 0, null);
                                     //  var a = document.getElementById("enlace"); 
-                                      urlinstagram = data2.replace('.html', '.jpg');
-                                      urlwhatsapp = "https://api.whatsapp.com/send?text="+txtsuge+" "+urlinstagram+"";
+                                      //urlinstagram = data2.replace('.html', '.jpg');
+                                      //urlwhatsapp = "https://api.whatsapp.com/send?text="+txtsuge+" "+urlinstagram+"";
                                     //  a.dispatchEvent(evt); 
                                         setTimeout(
                                           function() 
                                           {
-                                            $('#modal-ya .whatsapp a').attr('href', urlwhatsapp);
-                                            $('#modal-ya .instagram a').attr('href', urlinstagram)
                                             $('#modal-ya').modal('show');
                                           }, 5000);
                                     return false;
@@ -1329,7 +1300,7 @@ function Convert() {
                         if ($row_plantilla=mysql_fetch_array($result_plantilla)) {
                     ?>
                     <ul>
-                        <li class="tituloseccion plantilla" data-link="#plantilla-grat">PLANTILLA PARA EDITAR</li>
+                        <li class="tituloseccion plantilla" data-link="#plantilla-paga">PLANTILLA PARA EDITAR</li>
                     </ul>
                     <?php 
                     }
@@ -1350,25 +1321,8 @@ function Convert() {
                     </div>
                     <?php 
                         }
-
-                        $result_gifs=mysql_query("select * from redes_gifs WHERE tipo='paga'");
-                        if ($row_gifs=mysql_fetch_array($result_gifs)) {
                     ?>
-                    <ul>
-                        <li class="tituloseccion"><a href="#">GIFS DISPONIBLES</a></li>
-                    </ul>
-                    <div class="lista-scroll" style="display: none;">
-                        <?php 
-                            do {
-                            ?>
-                                <a class="predet gife" title="Seleccioná" href="redes/gifs/<?php echo($row_gifs['foto']); ?>" rel="<?php echo($row_gifs['Id']); ?>"><img src="redes/gifs/<?php echo($row_gifs['foto']); ?>" class="img-responsive" alt=""></a>
-                            <?php
-                            } while ($row_gifs=mysql_fetch_array($result_gifs)); 
-                        ?>
-                    </div>
-                    <?php 
-                        }
-                    ?>
+                    
                 </div>
                 <!-- Botonera Acciones ends-->
                 <!-- Estadisticas start-->
@@ -1379,13 +1333,13 @@ function Convert() {
                         </div>
                         <div id="forprevia">
                             <?php 
-                                mysql_data_seek($result_plantilla, 0);
+                                $result_plantilla=mysql_query("select * from redes_plantilla_facebook WHERE tipo='paga'");
                                 if ($row_plantilla=mysql_fetch_array($result_plantilla)) {
                                     ?>
-                                        <div id="plantilla-paga" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="display: none;">
-                                            <img src="redes/<?php echo($row_plantilla['banner']); ?>" style="float:left;" height="114" width="500" alt="">
+                                        <div id="plantilla-paga" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="display: none; background-image: url(redes/<?php echo($row_plantilla['fondo']); ?>);">
+                                            <div id="textura" style="background-image: url(redes/<?php echo($row_plantilla['banner']); ?>);"></div>
                                             <!--.contiene-->
-                                            <div class="contiene" style="background-image: url(redes/<?php echo($row_plantilla['fondo']); ?>);">
+                                            <div class="contiene">
                                                 <p class="titulo"></p>
                                                 <div class="imagen">
                                                     <img src="" alt="">
@@ -1442,7 +1396,7 @@ function Convert() {
                                     <?php
                                 }
                             ?> 
-                            <div id="disepred" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="display: none;">
+                            <div id="disepred-paga" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="display: none;">
                             </div>
                         </div>
                         
@@ -1483,7 +1437,7 @@ function Convert() {
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content" style="width:550px!important;">
-      <div class="modal-header">
+      <div class="modal-header" style="right:-80px!important;">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
@@ -1633,8 +1587,8 @@ function Convert() {
             <h3><img src="images/titulo_ideas.png" class="img-responsive center-block" alt=""></h3>
                 <form action="" method="post" id="insertaridea" name="insertaridea">
                 <?php 
-                mysql_data_seek($result_plantilla, 0);
-                if ($row_plantilla=mysql_fetch_array($result_plantilla)) { 
+                    $result_plantilla=mysql_query("select * from redes_plantilla_facebook WHERE tipo='paga'");
+                    if ($row_plantilla=mysql_fetch_array($result_plantilla)) {
                     if (isset($row_plantilla['sugerido1'])) { ?>
                     <div class="form-group">
                         <label>
@@ -1678,15 +1632,13 @@ function Convert() {
       <div class="modal-header"> 
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
-      <div class="modal-body text-center">
+      <div class="modal-body">
             <h2 class="celeste">¡Ya compartiste tu diseño!</h2>
-            <p class="sin">¿Querés alcanzar a más personas?</p>
-            <p class="sin"><strong>Compartilo también en:</strong></p>
-            <ul class="iconos-redes">
-                <li class="instagram"><a href="#"><img src="images/icono_instagram.png" class="img-responsive" alt="Instagram"> Instagram</a></li>
-                <li class="whatsapp"><a href="#" target="_blank"><img src="images/icono_whatsapp.png" class="img-responsive" alt="Whatsapp"> Whatsapp</a></li>
-            </ul>
-            <a href="#" class="close" data-dismiss="modal">N0, GRACIAS</a>
+            <p class="sin"><strong>Seguí éstos pasos para promocionarla y alcanzar nuevas audiencias:</strong><br></p>
+            <p>Realizá la publicación.</p>
+            <p>Busca la publicación que querés promocionar y hacé clic en el botón azul Promocionar la publicación.</p>
+            <p>Seguí las indicaciones de Facebook para conﬁgurarla según tus preferencias.</p>
+            <a href="#" class="close" data-dismiss="modal">OK</a>
       </div>
     </div>
     </div>

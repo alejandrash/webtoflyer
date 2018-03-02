@@ -1430,10 +1430,10 @@ function Convert() {
                                 mysql_data_seek($result_plantilla, 0);
                                 if ($row_plantilla=mysql_fetch_array($result_plantilla)) {
                                     ?>
-                                        <div id="plantilla-grat" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="display: none;">
+                                        <div id="plantilla-grat" class="col-lg-9 col-md-9 col-sm-12 col-xs-12" style="display: none; background-image: url(redes/<?php echo($row_plantilla['fondo']); ?>);">
                                             <img src="redes/<?php echo($row_plantilla['banner']); ?>" style="float:left;" height="114" width="500" alt="">
                                             <!--.contiene-->
-                                            <div class="contiene" style="background-image: url(redes/<?php echo($row_plantilla['fondo']); ?>);">
+                                            <div class="contiene">
                                                 <p class="titulo"></p>
                                                 <div class="imagen">
                                                     <img src="" alt="">

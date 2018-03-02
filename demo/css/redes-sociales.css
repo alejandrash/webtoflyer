@@ -157,6 +157,7 @@
 	margin-top: 15px;
 	cursor: pointer;
 }
+.botonera-acciones .carga .titulo-seccion, .botonera-acciones .carga .tituloseccion {margin-top: 7px; margin-bottom: 7px;}
 .botonera-acciones .titulo-seccion:after, .botonera-acciones .tituloseccion:after {
 	font-family: FontAwesome;
     position: absolute;
@@ -255,7 +256,7 @@
 	left:-15px;
 }
 #base-empty-paga {
-	width:1200px;
+	width:600px;
 	height: 315px;
 	background: url('../images/bg_empty_facebook_pago.png') no-repeat center top;
 	background-size: contain;
@@ -263,7 +264,6 @@
 	left:-15px;
 }
 #plantilla-grat, #plantilla-paga {
-	background: #fff;
 	position: absolute;
 	left:0;
 	top:0;
@@ -273,8 +273,20 @@
 	border:1px solid #ccc;
 	padding:0;
 	margin:0;
+	background-color: #FFF;
 }
-#plantilla-paga {width:602px; height: 317px;}
+#plantilla-paga {width:602px; height: 317px; background-size: contain;}
+#plantilla-paga #textura {
+	width: 100%;
+	height: 50%;
+	background-size: contain;
+	background-position: center top;
+	background-repeat: no-repeat;
+	position: absolute;
+	left:0;
+	top:0;
+	z-index: 120;
+}
 #disepred {
 	background: #fff;
 	background-size:cover;
@@ -283,6 +295,18 @@
 	top:0;
 	width:500px;
 	height: 500px;
+	box-sizing: border-box;
+	padding:0;
+	margin:0;
+}
+#disepred-paga {
+	background: #fff;
+	background-size:contain;
+	position: absolute;
+	left:0;
+	top:0;
+	width:600px;
+	height: 315px;
 	box-sizing: border-box;
 	padding:0;
 	margin:0;
@@ -298,7 +322,7 @@
 	cursor: pointer;
 	display: block;
 }
-#plantilla-paga .insertar {width:600px; height: 315px;}
+#plantilla-paga .insertar {width:600px; height: 315px; z-index: 9999999;}
 #plantilla-grat .insertar:hover, #plantilla-paga .insertar:hover {background: #FFF url('../images/bg_insertar_redes_over.png') no-repeat center center;}
 #plantilla-grat .quitar, #plantilla-paga .quitar {
     position: absolute;
@@ -340,11 +364,10 @@
 	clear: both;
 	padding:6px 15px 0 15px;
 	box-sizing: border-box;
-	background-color: #FFF;
 	position: relative;
 	display: none;
 }
-#plantilla-paga .contiene {width:100%; height: 100%;}
+#plantilla-paga .contiene {width:100%; height: 100%; padding:14% 2.5% 0 2.5%;}
 
 
 
@@ -367,6 +390,11 @@
 	clear: both;
 	margin-bottom: 6px;
 }
+#plantilla-paga .contiene .imagen {
+	height:73%;
+	width:100%;
+	margin-bottom: 0;
+}
 .contiene .imagen img {
 	height: auto;
 	max-height: 250px;
@@ -375,6 +403,9 @@
     display: inline-block;
     margin: 0 auto;
     vertical-align: middle;
+}
+#plantilla-paga .contiene .imagen img {
+	max-height: 100%;
 }
 .contiene .selecucarda {
 	position: absolute;
@@ -412,6 +443,15 @@
 	font-size: 14px;
 	padding-top: 3px;
 }
+#plantilla-paga .contiene .bottom {
+	position: relative; 
+	top:-35%;
+	background:url('../images/bg_redes_precioverde_paga.png') center center no-repeat;
+	background-size: 100% 100%;
+	width:24%;
+	height: 30%;
+	font-size: 10px;
+}
 .contiene .bottom span {font-weight: bold;}
 .contiene .bottom .big {
 	margin:0;
@@ -425,12 +465,14 @@
 	color:#FFF!important;
 	text-align: center;
 }
+#plantilla-paga .contiene .bottom .big {height: 50%; font-size: 25px;}
 .contiene .bottom .preciotach {
 	width:100%;
 	font-size: 13px;
 	text-align: center;
 	position: relative;
 }
+#plantilla-paga .contiene .bottom .preciotach {font-size: 11px;}
 .contiene .bottom .preciotach span {
 	font-weight: normal;
 	float:left;
@@ -442,6 +484,7 @@
 	position: relative;
 	top:-2px;
 }
+#plantilla-paga .contiene .bottom .preciotach span {top:-1px; height: 16px; line-height: 16px; padding:0; width:40%;}
 .contiene .bottom .preciotach input {
 	float:left;
 	width:73px!important;
@@ -456,6 +499,7 @@
 	position: absolute;
     right: 10px;
 }
+#plantilla-paga .contiene .bottom .preciotach input {width:56%!important; float:right; height: 20px; font-size:11px!important; padding:0; right:0;}
 .contiene .bottom .preciotach .linea {
     display: block;
     background: url(../images/linea_tachado.png) center center no-repeat;
@@ -466,6 +510,9 @@
     left: 75px;
     top: 5px;
     display: none;
+}
+#plantilla-paga .contiene .bottom {
+	margin-left: 0;
 }
 .contiene .descripcion {
 	float:left;
@@ -501,6 +548,10 @@
 	font-family: 'Roboto Condensed';
 	display: none;
 }
+#plantilla-paga .contiene .selec-financiacion-big {
+	margin-left: 2.4%;
+	top:54%;
+}
 .contiene .selec-financiacion-big a.sele img {
 	max-height: 18px;
 	top:0;
@@ -514,6 +565,10 @@
 	text-align: center;
 	border:0!important;
 	padding-top: 0!important;
+}
+#plantilla-paga #agregar-sda {
+	left:1%;
+	top:78%;
 }
 #agregar-sda img {
 	width:100%;
@@ -547,6 +602,7 @@
     display: none;
     background-image: url(../images/menos.png);
 }
+#plantilla-paga .agregartachado, #plantilla-paga .quitartachado {left:-10px; top:0;}
 .contiene .selec-financiacion-big .mitad {
 	width: 86px;
 	float: left;
@@ -616,6 +672,13 @@
 	color:#6f6f6e;
 	font-size: 11px;
 }
+#plantilla-paga .contiene .selec-financiacion-big .zona-valores {
+	right:0;
+	top:100%;
+	left:0;
+	border:0!important;
+	background: none!important;
+}
 .contiene .selec-financiacion-big .zona-valores p {
 	font-family: 'Open Sans Condensed', sans-serif;
 	color:#6f6f6e;
@@ -629,12 +692,19 @@
 	height: 39px;
 	position: relative;
 }
+#plantilla-paga .contiene .selec-financiacion-big .zona-valores .cft {padding-top: 5px; border:0!important;}
+
+#plantilla-paga .contiene .selec-financiacion-big .zona-valores .cft .fr_cft, 
+#plantilla-paga .contiene .selec-financiacion-big .zona-valores .cft p,
+#plantilla-paga .contiene .selec-financiacion-big .zona-valores .right {display: none!important;}
+
 .contiene .selec-financiacion-big .zona-valores .cft p {font-size: 26px; line-height: 1;}
 .contiene .selec-financiacion-big .zona-valores .cft a {
 	position: absolute;
 	left:2px;
 	top:4px;
 }
+#plantilla-paga .contiene .selec-financiacion-big .zona-valores .cft a {top:9px;}
 .contiene .selec-financiacion-big .zona-valores .right {
 	float:left;
 	width: 137px;
@@ -680,6 +750,7 @@
 	padding:30px 0;
 	max-width: 500px;
 	position: relative;
+	margin-left: -15px;
 }
 .texto_desc #descripcion {
 	font-size: 13px!important;
@@ -702,7 +773,7 @@
 	width: 52px;
 	position: absolute;
 	top:30px;
-	right:-70px;
+	right:-100px;
 	background:url('../images/btn_ideas.png') center center no-repeat;
 	background-size: contain;
 }
@@ -736,3 +807,25 @@
 	margin-top: 20px;
 }
 #insertaridea textarea:hover, #insertaridea input:focus {border-color: #7ac943;}
+
+
+
+/*
+#previa #plantilla-paga {width:1200px; height: 630px;}
+#previa #plantilla-paga .contiene .bottom {font-size: 25px;}
+#previa #plantilla-paga .contiene .bottom .big {font-size:48px;}
+#previa #plantilla-paga .contiene .bottom .preciotach {font-size: 20px; padding-top: 5px;}
+#previa #plantilla-paga .contiene .bottom .preciotach input {font-size:20px!important;}
+#previa #plantilla-paga .contiene .bottom .preciotach .linea {top:10px; left:115px; background-size: contain; height: 15px; width: 100px;}
+#previa #plantilla-paga .contiene .bottom .preciotach span {padding-top: 5px;}
+#previa #plantilla-paga .contiene .selec-financiacion-big {width:554px; height: 143px; background-size: contain;}
+#previa #plantilla-paga .contiene .selec-financiacion-big .mitad {height: 50%; width: 25%;}
+#previa #plantilla-paga .contiene .selec-financiacion-big .zona-cuota {height: 50%; width: 25%; padding-top: 15px; font-size: 20px;}
+#previa #plantilla-paga .contiene .selec-financiacion-big .zona-cuota a {font-size: 20px;}
+#previa #plantilla-paga .contiene .selec-financiacion-big .mitad a {height: 50%; line-height: 25px; width:100%;}
+#previa #plantilla-paga .contiene .selec-financiacion-big a.sele img {max-height: 20px; top:2px;}
+#previa #plantilla-paga .contiene .selec-financiacion-big input {height: 50%; width:100%; max-width:275px; font-size: 48px;}
+#previa #plantilla-paga .financiado .bottom .big {height: 22px; font-size: 11px; right:0; top:160px;}
+#previa #plantilla-paga .selec-financiacion-big a.selecuotas span {font-size:23px!important;}
+#previa #plantilla-paga .selec-financiacion-big a.sele img {max-width:90px!important; max-height:50px!important;}
+*/
